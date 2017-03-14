@@ -14,6 +14,7 @@
   
   <modules>
     <module>send-sms-ftp-core</module>
+    <module>send-sms-ftp-engine</module>
   </modules>
 
   <dependencies>
