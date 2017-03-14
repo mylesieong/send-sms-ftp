@@ -8,25 +8,27 @@ import java.util.ArrayList;
 
 import com.bcm.app.core.*;
 
-public class SendSMSJob {
+public class SendSMSJob extends Thread {
 
     // private static final Logger mLogger = Logger.getLogger(SendSMSJob.class);
 
-    private static final String FTP_ADDRESS = "172.18.255.108";
-    private static final int FTP_PORT = 21;
-    private static final String FTP_USER = "itoper";
-    private static final String FTP_PASSWORD = "IToper01";
-    private static final String FTP_FOLDER = "Test";
-    private static final String SMS_FILE = "C:\\smsfile\\*.msg";
-    private static final String SMS_FOLDER = "C:\\smsfile";
-    private static final String BKUP_FOLDER = "C:\\smssent";
-    private static final String CUR_DIR = System.getProperty("user.dir");
-    private static final String INMSG = "inmsg.txt";
-    private static final String OUTMSG = "outmsg.txt";
+    private final String FTP_ADDRESS = "172.18.255.108";
+    private final int FTP_PORT = 21;
+    private final String FTP_USER = "itoper";
+    private final String FTP_PASSWORD = "IToper01";
+    private final String FTP_FOLDER = "Test";
+    private final String SMS_FILE = "C:\\smsfile\\*.msg";
+    private final String SMS_FOLDER = "C:\\smsfile";
+    private final String BKUP_FOLDER = "C:\\smssent";
+    private final String CUR_DIR = System.getProperty("user.dir");
+    private final String INMSG = "inmsg.txt";
+    private final String OUTMSG = "outmsg.txt";
     
-    private static final List<FileManipulator> mProcessChain = new ArrayList<FileManipulator>();
+    private final List<FileManipulator> mProcessChain = new ArrayList<FileManipulator>();
     
-    static {
+    private boolean mIsActive;
+    
+    public SendSMSJob() {
         /* Set up MessageRegisterLogProxy */
         MessageRegisterLogProxy messageRegisterLogProxy = new MessageRegisterLogProxy();
         
@@ -42,30 +44,50 @@ public class SendSMSJob {
         MessageBackuperLogProxy messageBackuperLogProxy = new MessageBackuperLogProxy();
         messageBackuperLogProxy.setPath(BKUP_FOLDER);
         
-        mProcessChain.add(messageRegisterLogProxy);
-        mProcessChain.add(messageFtpUploaderLogProxy);
-        mProcessChain.add(messageBackuperLogProxy);
+        this.mProcessChain.add(messageRegisterLogProxy);
+        this.mProcessChain.add(messageFtpUploaderLogProxy);
+        this.mProcessChain.add(messageBackuperLogProxy);
+        
+        /* Set thread active flag */
+        this.mIsActive = true;
     }
     
-    public static void main(String[] args) {
-        try{
-            File targetFoler = new File(SMS_FOLDER);
-            if (targetFoler.exists() && targetFoler.isDirectory()){
-                for (File f : targetFoler.listFiles()){
-                    // System.out.println("Found file(s):" + f);
-                    // mLogger.info("Found file(s):" + f);
-                    for (FileManipulator fm : mProcessChain){
-                        fm.setFile(f);
-                        fm.manipulate();
-                        if (!fm.isSuccess()){
-                            return;
+    public boolean isActive(){
+        return this.mIsActive;
+    }
+    
+    @Override
+    public void run(){
+        while(isActive()) {
+            try {
+                //File operations
+                File targetFoler = new File(SMS_FOLDER);
+                if (targetFoler.exists() && targetFoler.isDirectory()){
+                    for (File f : targetFoler.listFiles()){
+                        // System.out.println("Found file(s):" + f);
+                        // mLogger.info("Found file(s):" + f);
+                        for (FileManipulator fm : mProcessChain){
+                            fm.setFile(f);
+                            fm.manipulate();
+                            if (!fm.isSuccess()){
+                                break;
+                            }
                         }
                     }
                 }
+                
+                // 暫停目前的執行緒5秒
+                Thread.sleep(5000);
+                
+            } catch(InterruptedException e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+    }
+    
+    public static void main(String[] args) {
+        SendSMSJob job = new SendSMSJob();
+        job.run(); //not using thread, start using the current thread, terminated by Ctrl C in bash
     }
     
 }
