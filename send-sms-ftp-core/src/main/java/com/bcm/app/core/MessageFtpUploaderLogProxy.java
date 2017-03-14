@@ -1,4 +1,4 @@
-package com.bcm.app.sendsms;
+package com.bcm.app.core;
 
 import org.apache.log4j.Logger;
 import java.io.File;

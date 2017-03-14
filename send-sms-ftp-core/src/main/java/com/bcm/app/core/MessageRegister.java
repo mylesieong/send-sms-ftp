@@ -1,4 +1,4 @@
-package com.bcm.app.sendsms;
+package com.bcm.app.core;
 
 import java.io.File;
 
