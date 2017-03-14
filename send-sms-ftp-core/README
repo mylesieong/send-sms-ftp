@@ -1,0 +1,50 @@
+1. OO structure:
+    $ public abstract class FileManipulator{
+    $   protected File mFile;
+    $   protected Queue<String> mLogQueue;
+    $   public void setFile();
+    $   public void getFile();
+    $   public void getLogQueue();
+    $   public void manipulate();
+    $   public boolean isSuccess();
+    $ }
+    $ public class MessageRetriever implements Loggable<String>{
+    $ ...
+    
+    So then MessageRetriever, MessageConvertor, MessageSender, MessageBackuper these 4 manipulater only need to override the manipulateFile() method and the abstact Loggable method.
+    
+    The property reading and directory iterating job is performed in ScheduledTask class like below:
+    
+    $ public class ScheduledTask...
+    $   File targetDirectory = property.getString("sms_folder");
+    $   ...
+    $   MessageRetriever msgRetriever = new MessageRetriever();
+    $   ...
+    $   for (File file: targetDirectory.getFiles()){
+    $     msgRetriever.setFile(file);
+    $     msgRetriever.manipulate();
+    $     if (!msgRetriever.isSuccess()) continue; //skip below chain of manipulation
+    $   }
+    $   ...
+    $   /* Write logs after at the end of the scheduled task*/
+    $   while (!msgRetriever.getLogQueue().empty()){
+    $     logger.info(msgRetriever.getLogQueue().remove());
+    $   }
+    $   ...
+    $ <end>
+
+2. This structure provide below conviences:
+    * Single responsiblity/Open-Close Principle are in the FileManipulator class.
+    * Dependency injection is perform at every manipulator and the property reading.
+    * Listov, I avoid extending Queue but composit it instead.
+    * DRY, use FileManipulator to avoid duplication of setter/getter.
+
+3. This structure provide conviences in below cases:
+    * If one day, back up strategy is updated to back up another copy to ftp... we dont need to change exist code, just create new subclass of MessageBackuper and add the ftp operation in void:manipulate()
+    * If one day, the input source is not directory anymore...
+    * If one day, Convert message method change...
+    * If one day, a new prioritization system is introduced...
+    * If one day, not ftp but sftp (or web service)...
+    * If one day, log management strategy is published and logs should be sent to a central repo with interal micro-service...
+    
+    All above situation, no existing code needed to modify (only the scheduledtask). And new subclass is enough for function extension.
