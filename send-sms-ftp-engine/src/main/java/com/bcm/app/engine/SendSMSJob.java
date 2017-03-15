@@ -10,7 +10,7 @@ import com.bcm.app.core.*;
 
 public class SendSMSJob extends Thread {
 
-    // private static final Logger mLogger = Logger.getLogger(SendSMSJob.class);
+    final static Logger mLogger = Logger.getLogger(SendSMSJob.class);
 
     private final String FTP_ADDRESS = "172.18.255.108";
     private final int FTP_PORT = 21;
@@ -85,8 +85,13 @@ public class SendSMSJob extends Thread {
         }
     }
     
+    public void logTheStart(){
+        mLogger.debug("Job Starts.");
+    }
+    
     public static void main(String[] args) {
         SendSMSJob job = new SendSMSJob();
+        job.logTheStart();
         job.run(); //not using thread, start using the current thread, terminated by Ctrl C in bash
     }
     
