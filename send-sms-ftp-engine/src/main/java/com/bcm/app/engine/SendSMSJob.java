@@ -13,24 +13,9 @@ import com.bcm.app.core.*;
 public class SendSMSJob extends Thread {
 
     final static Logger mLogger = Logger.getLogger(SendSMSJob.class);
-/*
-    private final String FTP_ADDRESS = "172.18.255.108";
-    private final int FTP_PORT = 21;
-    private final String FTP_USER = "itoper";
-    private final String FTP_PASSWORD = "IToper01";
-    private final String FTP_FOLDER = "Test";
-    private final String SMS_FILE = "C:\\smsfile\\*.msg";
-    private final String SMS_FOLDER = "C:\\smsfile";
-    private final String BKUP_FOLDER = "C:\\smssent";
-    private final String CUR_DIR = System.getProperty("user.dir");
-    private final String INMSG = "inmsg.txt";
-    private final String OUTMSG = "outmsg.txt";
-    
-    private final List<FileManipulator> mProcessChain = new ArrayList<FileManipulator>();
-*/
-  
+
     private boolean mIsActive;
-    private List<FileManipulator> mProcessChain = new ArrayList<FileManipulator>();
+    private List<FileManipulator> mProcessChain;
     
     private String FTP_ADDRESS;
     private int FTP_PORT;
@@ -43,12 +28,22 @@ public class SendSMSJob extends Thread {
     private String CUR_DIR;
     private String INMSG;
     private String OUTMSG;
+    private int LOOP_INTERVAL;
 
-    public SendSMSJob(String propertiesPath) {
-        
+    public SendSMSJob(){
         super();
-        
-        /* Get properties */
+        this.mProcessChain = new ArrayList<FileManipulator>();
+        this.mIsActive = false;
+    }
+    
+    public SendSMSJob(String propertiesPath) {
+        super();
+        this.mProcessChain = new ArrayList<FileManipulator>();
+        this.mIsActive = false;
+        this.setProperties(propertiesPath);        
+    }
+    
+    public void setProperties(String propertiesPath){
         Properties prop = new Properties();
         InputStream input = null;
 
@@ -66,6 +61,7 @@ public class SendSMSJob extends Thread {
             CUR_DIR = System.getProperty("user.dir");
             INMSG = prop.getProperty("INMSG");
             OUTMSG = prop.getProperty("OUTMSG");
+            LOOP_INTERVAL = Integer.parseInt(prop.getProperty("LOOP_INTERVAL"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -88,18 +84,21 @@ public class SendSMSJob extends Thread {
         this.mProcessChain.add(messageRegisterLogProxy);
         this.mProcessChain.add(messageFtpUploaderLogProxy);
         this.mProcessChain.add(messageBackuperLogProxy);
-        
-        /* Set thread active flag */
-        this.mIsActive = true;
     }
     
     public boolean isActive(){
         return this.mIsActive;
     }
+
+    public void setActive(boolean b){
+        this.mIsActive = b;
+    }
     
     @Override
     public void run(){
-        while(isActive()) {
+        mLogger.debug("Job Starts.");
+        this.mIsActive = true;
+        while(this.isActive()) {
             try {
                 //File operations
                 File targetFoler = new File(SMS_FOLDER);
@@ -118,21 +117,18 @@ public class SendSMSJob extends Thread {
                 }
                 
                 // 暫停目前的執行緒5秒
-                Thread.sleep(5000);
+                Thread.sleep(LOOP_INTERVAL);
+                mLogger.debug("Job loops.");
                 
             } catch(InterruptedException e) {
                 e.printStackTrace();
             }
         }
-    }
-    
-    public void logTheStart(){
-        mLogger.debug("Job Starts.");
+        mLogger.debug("Job Ends.");
     }
     
     public static void main(String[] args) {
         SendSMSJob job = new SendSMSJob(args[0]);
-        job.logTheStart();
         job.run(); //not using thread, start using the current thread, terminated by Ctrl C in bash
     }
     
