@@ -13,10 +13,21 @@ import java.awt.Font;
 
 import com.bcm.app.engine.SendSMSJob;
 
-public class SendSMSUI {
+public class SendSMSUI implements ActionListener{
 
-    private JFrame mFrame;
     private SendSMSJob mJob;
+    private JFrame mFrame;
+    private JLabel mLastSentTimeTagLabel;
+    private JLabel mLastSentTimeLabel;
+    private JLabel mJobStatusTagLabel;
+    private JLabel mJobStatusLabel;
+    private JLabel mMomentLabel;
+    private JButton mStartButton;
+    private JButton mStopButton;
+    private JButton mExportLogButton;
+    private JButton mClearLogButton;
+    private JButton mChangeConfigButton;
+    private JButton mExitButton;
 
     /**
      * Launch the application.
@@ -54,63 +65,75 @@ public class SendSMSUI {
         mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mFrame.getContentPane().setLayout(null);
         
-        JLabel lblNewLabel = new JLabel("Last Sent DateTime: ");
-        lblNewLabel.setBounds(26, 32, 100, 16);
-        mFrame.getContentPane().add(lblNewLabel);
+        /*Last sent time */
+        mLastSentTimeTagLabel = new JLabel("Last Sent Time: ");
+        mLastSentTimeTagLabel.setBounds(26, 32, 100, 16);
+        mFrame.getContentPane().add(mLastSentTimeTagLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("Status: ");
-        lblNewLabel_1.setBounds(26, 59, 100, 14);
-        mFrame.getContentPane().add(lblNewLabel_1);
+        mLastSentTimeLabel = new JLabel("[...]");
+        mLastSentTimeLabel.setBounds(136, 33, 175, 14);
+        mFrame.getContentPane().add(mLastSentTimeLabel);
         
-        JLabel lblNewLabel_2 = new JLabel("MAIN STATUS");
-        lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 25));
-        lblNewLabel_2.setBounds(0, 84, 344, 48);
-        mFrame.getContentPane().add(lblNewLabel_2);
+        /* Job status */
+        mJobStatusTagLabel = new JLabel("Job Status: ");
+        mJobStatusTagLabel.setBounds(26, 59, 100, 14);
+        mFrame.getContentPane().add(mJobStatusTagLabel);
         
-        JLabel lblNewLabel_3 = new JLabel("[...]");
-        lblNewLabel_3.setBounds(136, 33, 175, 14);
-        mFrame.getContentPane().add(lblNewLabel_3);
+        mJobStatusLabel = new JLabel("[...]");
+        mJobStatusLabel.setBounds(136, 59, 175, 14);
+        mFrame.getContentPane().add(mJobStatusLabel);
         
-        JLabel lblNewLabel_4 = new JLabel("[...]");
-        lblNewLabel_4.setBounds(136, 59, 175, 14);
-        mFrame.getContentPane().add(lblNewLabel_4);
+        /* Moment status */
+        mMomentLabel = new JLabel("MOMENT");
+        mMomentLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        mMomentLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
+        mMomentLabel.setBounds(0, 84, 344, 48);
+        mFrame.getContentPane().add(mMomentLabel);
         
-        JButton btnNewButton = new JButton("Start Send SMS");
-        btnNewButton.setBounds(26, 154, 125, 25);
-        btnNewButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                Thread thread = new Thread(mJob);
-                thread.start();
-            }
-        });
-        mFrame.getContentPane().add(btnNewButton);
+        /* Button: Start and stop */
+        mStartButton = new JButton("Start Send SMS");
+        mStartButton.setBounds(26, 154, 125, 25);
+        mStartButton.addActionListener(this);
+        mFrame.getContentPane().add(mStartButton);
         
-        JButton btnNewButton_1 = new JButton("Stop Send SMS");
-        btnNewButton_1.setBounds(186, 154, 125, 25);
-        btnNewButton_1.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                mJob.setActive(false);
-            }
-        });
-        mFrame.getContentPane().add(btnNewButton_1);
+        mStopButton = new JButton("Stop Send SMS");
+        mStopButton.setBounds(186, 154, 125, 25);
+        mStopButton.addActionListener(this);
+        mFrame.getContentPane().add(mStopButton);
         
-        JButton btnNewButton_2 = new JButton("Export Log File");
-        btnNewButton_2.setBounds(26, 188, 125, 25);
-        mFrame.getContentPane().add(btnNewButton_2);
+        /* Button: log export and log clear */
+        mExportLogButton = new JButton("Export Log File");
+        mExportLogButton.setBounds(26, 188, 125, 25);
+        mFrame.getContentPane().add(mExportLogButton);
         
-        JButton btnNewButton_3 = new JButton("Clear Log File");
-        btnNewButton_3.setBounds(186, 188, 125, 25);
-        mFrame.getContentPane().add(btnNewButton_3);
+        mClearLogButton = new JButton("Clear Log File");
+        mClearLogButton.setBounds(186, 188, 125, 25);
+        mFrame.getContentPane().add(mClearLogButton);
         
-        JButton btnNewButton_4 = new JButton("Change Configuration");
-        btnNewButton_4.setBounds(26, 224, 285, 25);
-        mFrame.getContentPane().add(btnNewButton_4);
+        /* Change config button*/
+        mChangeConfigButton = new JButton("Change Configuration");
+        mChangeConfigButton.setBounds(26, 224, 285, 25);
+        mFrame.getContentPane().add(mChangeConfigButton);
         
-        JButton btnNewButton_5 = new JButton("Exit");
-        btnNewButton_5.setBounds(26, 260, 285, 25);
-        mFrame.getContentPane().add(btnNewButton_5);
+        /* Exit button */
+        mExitButton = new JButton("Exit");
+        mExitButton.setBounds(26, 260, 285, 25);
+        mFrame.getContentPane().add(mExitButton);
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e){
+        
+        if (e.getSource() == this.mStartButton){
+            Thread thread = new Thread(this.mJob);
+            thread.start();
+            this.mJobStatusLabel.setText("job started.");
+        }
+        
+        if (e.getSource() == this.mStopButton){
+            this.mJob.setActive(false);
+            this.mJobStatusLabel.setText("job ended.");
+        }
+    }
+    
 }
