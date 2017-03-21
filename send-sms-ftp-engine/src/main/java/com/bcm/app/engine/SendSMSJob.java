@@ -1,6 +1,7 @@
 package com.bcm.app.engine;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;   
 
 import java.io.*;
 import java.util.List;
@@ -29,6 +30,7 @@ public class SendSMSJob extends Thread {
     private String INMSG;
     private String OUTMSG;
     private int LOOP_INTERVAL;
+    private String LOG_PROP;   
 
     public SendSMSJob(){
         super();
@@ -62,6 +64,7 @@ public class SendSMSJob extends Thread {
             INMSG = prop.getProperty("INMSG");
             OUTMSG = prop.getProperty("OUTMSG");
             LOOP_INTERVAL = Integer.parseInt(prop.getProperty("LOOP_INTERVAL"));
+            LOG_PROP = prop.getProperty("LOG_PROP");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -84,6 +87,10 @@ public class SendSMSJob extends Thread {
         this.mProcessChain.add(messageRegisterLogProxy);
         this.mProcessChain.add(messageFtpUploaderLogProxy);
         this.mProcessChain.add(messageBackuperLogProxy);
+        
+        /* Ddynamic configuration of log setting */
+        PropertyConfigurator.configure(LOG_PROP);
+        
     }
     
     public boolean isActive(){
