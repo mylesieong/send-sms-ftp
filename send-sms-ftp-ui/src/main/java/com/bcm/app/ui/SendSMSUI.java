@@ -14,6 +14,11 @@ import java.awt.event.ItemEvent;
 import java.awt.EventQueue;
 import java.awt.Font;
 
+import java.sql.*;
+ 
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteDataSource;
+
 import com.bcm.app.engine.SendSMSJob;
 
 public class SendSMSUI implements ActionListener, ItemListener {
@@ -171,7 +176,7 @@ public class SendSMSUI implements ActionListener, ItemListener {
         
         /* Fetch Config from SQL server checkbox*/
         mFetchConfigCheckBox = new JCheckBox("Load Configuration from SQL Server");
-        mFetchConfigCheckBox.setBounds(26, 70, 200, 16);
+        mFetchConfigCheckBox.setBounds(26, 70, 250, 16);
         mFetchConfigCheckBox.addItemListener(this);
         mLoadConfigFrame.getContentPane().add(mFetchConfigCheckBox);
         
@@ -199,7 +204,33 @@ public class SendSMSUI implements ActionListener, ItemListener {
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == this.mFetchConfigCheckBox){
-            System.out.println("Checkbox: " + (e.getStateChange()==1?"checked":"unchecked"));
+            if (e.getStateChange() == 1){ //checked
+                try {
+                    SQLiteConfig config = new SQLiteConfig();
+                    // config.setReadOnly(true);   
+                    config.setSharedCache(true);
+                    config.enableRecursiveTriggers(true);
+
+                    SQLiteDataSource ds = new SQLiteDataSource(config); 
+                    ds.setUrl("jdbc:sqlite:sms.db");
+                    Connection con = ds.getConnection();
+                    //ds.setServerName("sample.db");
+                    String sql = "select * from sms_properties";
+                    Statement stat = null;
+                    ResultSet rs = null;
+                    stat = con.createStatement();
+                    rs = stat.executeQuery(sql);
+                    while(rs.next()){
+                        System.out.println(rs.getString("spftpadd")+"\t"+rs.getString("spftpprt"));
+                    }
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                this.mFtpAddressLabel.setText("to checked");
+            }
+            if (e.getStateChange() != 1){ //unchecked
+                this.mFtpAddressLabel.setText("empty");
+            }
         }
     }   
 
