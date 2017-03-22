@@ -4,16 +4,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JDialog;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 import java.awt.EventQueue;
 import java.awt.Font;
 
 import com.bcm.app.engine.SendSMSJob;
 
-public class SendSMSUI implements ActionListener{
+public class SendSMSUI implements ActionListener, ItemListener {
 
     private SendSMSJob mJob;
     
@@ -42,6 +45,7 @@ public class SendSMSUI implements ActionListener{
     // private JLabel mFtpPasswrodTagLabel;
     // private JLabel mFtpPasswordLabel;
     // more label to be added...
+    private JCheckBox mFetchConfigCheckBox;
     private JButton mLoadConfirmButton;
     private JButton mLoadCancelButton;
 
@@ -156,15 +160,20 @@ public class SendSMSUI implements ActionListener{
         mLoadConfigFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         mLoadConfigFrame.getContentPane().setLayout(null);
         
-        /*Last sent time */
+        /*Ftp address */
         mFtpAddressTagLabel = new JLabel("Ftp Address: ");
         mFtpAddressTagLabel.setBounds(26, 32, 100, 16);
         mLoadConfigFrame.getContentPane().add(mFtpAddressTagLabel);
         
-        /*Last sent time */
         mFtpAddressLabel = new JLabel("[...] ");
         mFtpAddressLabel.setBounds(136, 33, 175, 14);
         mLoadConfigFrame.getContentPane().add(mFtpAddressLabel);
+        
+        /* Fetch Config from SQL server checkbox*/
+        mFetchConfigCheckBox = new JCheckBox("Load Configuration from SQL Server");
+        mFetchConfigCheckBox.setBounds(26, 70, 200, 16);
+        mFetchConfigCheckBox.addItemListener(this);
+        mLoadConfigFrame.getContentPane().add(mFetchConfigCheckBox);
         
     }
     
@@ -187,4 +196,11 @@ public class SendSMSUI implements ActionListener{
         }
     }
     
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == this.mFetchConfigCheckBox){
+            System.out.println("Checkbox: " + (e.getStateChange()==1?"checked":"unchecked"));
+        }
+    }   
+
 }
