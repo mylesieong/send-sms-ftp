@@ -3,9 +3,13 @@ package com.bcm.app.ui;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 public class SendGUIApp {
+
+    @Autowired
+    private MainFrame frame;
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SendGUIApp.class)
@@ -15,10 +19,9 @@ public class SendGUIApp {
     }
 
     @Bean
-    public MainFrame frame() {
-        MainFrame frame = new MainFrame();
+    public String launchFrame() {
         frame.setVisible(true);
-        return frame;
+        return "Send SMS Application started.";
     }
 
 }
