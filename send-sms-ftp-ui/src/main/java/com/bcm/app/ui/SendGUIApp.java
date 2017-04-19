@@ -16,7 +16,9 @@ public class SendGUIApp {
 
     @Bean
     public MainFrame frame() {
-        return new MainFrame();
+        MainFrame frame = new MainFrame();
+        frame.setVisible(true);
+        return frame;
     }
 
 }
