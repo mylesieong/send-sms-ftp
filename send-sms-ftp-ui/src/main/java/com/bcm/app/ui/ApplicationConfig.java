@@ -6,22 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
-public class SendGUIApp {
-
-    @Autowired
-    private MainFrame frame;
+public class ApplicationConfig {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(SendGUIApp.class)
+        new SpringApplicationBuilder(ApplicationConfig.class)
                 .headless(false)
                 .web(false)
                 .run(args);
-    }
-
-    @Bean
-    public String launchFrame() {
-        frame.setVisible(true);
-        return "Send SMS Application started.";
     }
 
 }
