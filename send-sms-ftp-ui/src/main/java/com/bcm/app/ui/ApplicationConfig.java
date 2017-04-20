@@ -15,4 +15,8 @@ public class ApplicationConfig {
                 .run(args);
     }
 
+    @Bean
+    public FtpConfig ftpConfig(){
+        return new FtpConfig("config.properties");
+    }
 }

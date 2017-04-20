@@ -23,82 +23,85 @@ import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
 @Component
-public class ConfigFrame extends JFrame implements ItemListener {
+public class ConfigFrame extends JFrame implements ActionListener {
 
     /* Load Config Frame properties */
     private JLabel mFtpAddressTagLabel;
     private JLabel mFtpAddressLabel;
-    // private JLabel mFtpPortTagLabel;
-    // private JLabel mFtpPortLabel;
-    // private JLabel mFtpUserTagLabel;
-    // private JLabel mFtpUserLabel;
-    // private JLabel mFtpPasswrodTagLabel;
-    // private JLabel mFtpPasswordLabel;
-    // more label to be added...
-    private JCheckBox mFetchConfigCheckBox;
-    private JButton mLoadConfirmButton;
-    private JButton mLoadCancelButton;
+    private JLabel mFtpPortTagLabel;
+    private JLabel mFtpPortLabel;
+    private JButton mVerifyConfigButton;
+    private JButton mSaveConfigButton;
+    private JButton mCancelButton;
+
+    /* Ftp Config */
+    @Autowired
+    private FtpConfig ftpConfig;
 
     public ConfigFrame() {
-        initialize();
     }
 
     /**
      * Init this
      */
-    private void initialize() {
+    public void initialize() {
         this.setBounds(100, 100, 360, 360);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.getContentPane().setLayout(null);
         
         /*Ftp address */
         mFtpAddressTagLabel = new JLabel("Ftp Address: ");
-        mFtpAddressTagLabel.setBounds(26, 32, 100, 16);
+        mFtpAddressTagLabel.setBounds(26, 25, 100, 16);
         this.getContentPane().add(mFtpAddressTagLabel);
         
-        mFtpAddressLabel = new JLabel("[...] ");
-        mFtpAddressLabel.setBounds(136, 33, 175, 14);
+        mFtpAddressLabel = new JLabel(ftpConfig.getFtpAddress());
+        mFtpAddressLabel.setBounds(136, 25, 175, 16);
         this.getContentPane().add(mFtpAddressLabel);
         
-        /* Fetch Config from SQL server checkbox*/
-        mFetchConfigCheckBox = new JCheckBox("Load Configuration from SQL Server");
-        mFetchConfigCheckBox.setBounds(26, 70, 250, 16);
-        mFetchConfigCheckBox.addItemListener(this);
-        this.getContentPane().add(mFetchConfigCheckBox);
+        /*Ftp port */
+        mFtpPortTagLabel = new JLabel("Ftp Port: ");
+        mFtpPortTagLabel.setBounds(26, 50, 100, 16);
+        this.getContentPane().add(mFtpPortTagLabel);
         
+        mFtpPortLabel= new JLabel(ftpConfig.getFtpPort());
+        mFtpPortLabel.setBounds(136, 50, 175, 16);
+        this.getContentPane().add(mFtpPortLabel);
+
+        /* Button: verify */
+        mVerifyConfigButton = new JButton("Verify");
+        mVerifyConfigButton.setBounds(26, 260, 80, 35);
+        mVerifyConfigButton.addActionListener(this);
+        this.getContentPane().add(mVerifyConfigButton);
+        
+        /* Button: Save */
+        mSaveConfigButton = new JButton("Save");
+        mSaveConfigButton.setBounds(116, 260, 80, 35);
+        mSaveConfigButton.addActionListener(this);
+        this.getContentPane().add(mSaveConfigButton);
+
+        /* Button: Cancel1 */
+        mCancelButton = new JButton("Cancel");
+        mCancelButton.setBounds(206, 260, 80, 35);
+        mCancelButton.addActionListener(this);
+        this.getContentPane().add(mCancelButton);
     }
     
     @Override
-    public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == this.mFetchConfigCheckBox){
-            if (e.getStateChange() == 1){ //checked
-                try {
-                    SQLiteConfig config = new SQLiteConfig();
-                    // config.setReadOnly(true);   
-                    config.setSharedCache(true);
-                    config.enableRecursiveTriggers(true);
-
-                    SQLiteDataSource ds = new SQLiteDataSource(config); 
-                    ds.setUrl("jdbc:sqlite:sms.db");
-                    Connection con = ds.getConnection();
-                    //ds.setServerName("sample.db");
-                    String sql = "select * from sms_properties";
-                    Statement stat = null;
-                    ResultSet rs = null;
-                    stat = con.createStatement();
-                    rs = stat.executeQuery(sql);
-                    while(rs.next()){
-                        System.out.println(rs.getString("spftpadd")+"\t"+rs.getString("spftpprt"));
-                    }
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
-                this.mFtpAddressLabel.setText("to checked");
-            }
-            if (e.getStateChange() != 1){ //unchecked
-                this.mFtpAddressLabel.setText("empty");
-            }
+    public void actionPerformed(ActionEvent e){
+        
+        if (e.getSource() == this.mVerifyConfigButton){
+            System.out.println("Verify config");
         }
-    }   
+        
+        if (e.getSource() == this.mSaveConfigButton){
+            System.out.println("Save config");
+        }
+
+        if (e.getSource() == this.mCancelButton){
+            this.setVisible(false);
+        }
+                
+    }
+
 }
 
