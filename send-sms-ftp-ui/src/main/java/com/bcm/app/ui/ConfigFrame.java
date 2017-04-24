@@ -36,7 +36,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
 
     /* Ftp Config */
     @Autowired
-    private FtpConfig ftpConfig;
+    private FtpConfigProperties ftpConfigProperties;
 
     public ConfigFrame() {
     }
@@ -54,7 +54,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpAddressTagLabel.setBounds(26, 25, 100, 16);
         this.getContentPane().add(mFtpAddressTagLabel);
         
-        mFtpAddressLabel = new JLabel(ftpConfig.getFtpAddress());
+        mFtpAddressLabel = new JLabel(ftpConfigProperties.getFtpAddress());
         mFtpAddressLabel.setBounds(136, 25, 175, 16);
         this.getContentPane().add(mFtpAddressLabel);
         
@@ -63,7 +63,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpPortTagLabel.setBounds(26, 50, 100, 16);
         this.getContentPane().add(mFtpPortTagLabel);
         
-        mFtpPortLabel= new JLabel(ftpConfig.getFtpPort());
+        mFtpPortLabel= new JLabel(ftpConfigProperties.getFtpPort());
         mFtpPortLabel.setBounds(136, 50, 175, 16);
         this.getContentPane().add(mFtpPortLabel);
 
