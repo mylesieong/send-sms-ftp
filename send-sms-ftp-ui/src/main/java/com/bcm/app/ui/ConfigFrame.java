@@ -28,10 +28,28 @@ public class ConfigFrame extends JFrame implements ActionListener {
     /* Load Config Frame properties */
     private JLabel mFtpAddressTagLabel;
     private JLabel mFtpAddressLabel;
+    
     private JLabel mFtpPortTagLabel;
     private JLabel mFtpPortLabel;
+
     private JLabel mFtpUserTagLabel;
     private JLabel mFtpUserLabel;
+
+    private JLabel mFtpPasswordTagLabel;
+    private JLabel mFtpPasswordLabel;
+
+    private JLabel mFtpFolderTagLabel;
+    private JLabel mFtpFolderLabel;
+
+    private JLabel mSMSFolderTagLabel;
+    private JLabel mSMSFolderLabel;
+
+    private JLabel mBackupFolderTagLabel;
+    private JLabel mBackupFolderLabel;
+    
+    private JLabel mLoopIntervalTagLabel;
+    private JLabel mLoopIntervalLabel;
+    
     private JButton mVerifyConfigButton;
     private JButton mSaveConfigButton;
     private JButton mCancelButton;
@@ -77,6 +95,51 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpUserLabel= new JLabel(ftpConfigProperties.getFtpUser());
         mFtpUserLabel.setBounds(136, 75, 175, 16);
         this.getContentPane().add(mFtpUserLabel);
+
+        /*Ftp password */
+        mFtpPasswordTagLabel = new JLabel("Ftp Password: ");
+        mFtpPasswordTagLabel.setBounds(26, 100, 100, 16);
+        this.getContentPane().add(mFtpPasswordTagLabel);
+        
+        mFtpPasswordLabel= new JLabel(ftpConfigProperties.getFtpPassword());
+        mFtpPasswordLabel.setBounds(136, 100, 175, 16);
+        this.getContentPane().add(mFtpPasswordLabel);
+
+        /*Ftp Folder */
+        mFtpFolderTagLabel = new JLabel("Ftp Folder: ");
+        mFtpFolderTagLabel.setBounds(26, 125, 100, 16);
+        this.getContentPane().add(mFtpFolderTagLabel);
+        
+        mFtpFolderLabel= new JLabel(ftpConfigProperties.getFtpFolder());
+        mFtpFolderLabel.setBounds(136, 125, 175, 16);
+        this.getContentPane().add(mFtpFolderLabel);
+
+        /*SMS Folder */
+        mSMSFolderTagLabel = new JLabel("SMS Folder: ");
+        mSMSFolderTagLabel.setBounds(26, 150, 100, 16);
+        this.getContentPane().add(mSMSFolderTagLabel);
+        
+        mSMSFolderLabel= new JLabel(ftpConfigProperties.getSMSFolder());
+        mSMSFolderLabel.setBounds(136, 150, 175, 16);
+        this.getContentPane().add(mSMSFolderLabel);
+
+        /*Backup Folder */
+        mBackupFolderTagLabel = new JLabel("Backup Folder: ");
+        mBackupFolderTagLabel.setBounds(26, 175, 100, 16);
+        this.getContentPane().add(mBackupFolderTagLabel);
+        
+        mBackupFolderLabel= new JLabel(ftpConfigProperties.getBackupFolder());
+        mBackupFolderLabel.setBounds(136, 175, 175, 16);
+        this.getContentPane().add(mBackupFolderLabel);
+
+        /*Loop Interval */
+        mLoopIntervalTagLabel = new JLabel("Loop Interval: ");
+        mLoopIntervalTagLabel.setBounds(26, 200, 100, 16);
+        this.getContentPane().add(mLoopIntervalTagLabel);
+        
+        mLoopIntervalLabel= new JLabel(ftpConfigProperties.getLoopInterval());
+        mLoopIntervalLabel.setBounds(136, 200, 175, 16);
+        this.getContentPane().add(mLoopIntervalLabel);
 
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
