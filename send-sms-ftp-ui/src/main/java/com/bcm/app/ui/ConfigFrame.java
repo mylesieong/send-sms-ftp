@@ -166,10 +166,30 @@ public class ConfigFrame extends JFrame implements ActionListener {
         
         if (e.getSource() == this.mVerifyConfigButton){
             System.out.println("Verify config");
+            ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
+            ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
+            ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
+            ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
+            ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
+            ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
+            ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
+            ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
+            if (ftpConfigProperties.verifyFtpConnection()) {
+                System.out.println("Config integrity validated.");
+            }
         }
         
         if (e.getSource() == this.mSaveConfigButton){
             System.out.println("Save config");
+            ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
+            ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
+            ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
+            ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
+            ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
+            ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
+            ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
+            ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
+            ftpConfigProperties.saveConfigProperties();
         }
 
         if (e.getSource() == this.mCancelButton){

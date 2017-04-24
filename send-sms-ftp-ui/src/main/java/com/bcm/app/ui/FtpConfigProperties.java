@@ -2,7 +2,9 @@ package com.bcm.app.ui;
 
 import java.util.Properties;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ public class FtpConfigProperties {
     public final static String LOOP_INTERVAL_PROPERTY = "LOOP_INTERVAL";
     public final static String NA_VALUE = "N/A";
 
+    private String mConfigPath;
+
     private String mFtpAddress;
     private String mFtpPort;
     private String mFtpUser;
@@ -28,6 +32,8 @@ public class FtpConfigProperties {
     private String mLoopInterval;
 
     public FtpConfigProperties(String config){
+
+        this.mConfigPath = config;
 
         Properties prop = new Properties();
         InputStream input = null;
@@ -133,7 +139,25 @@ public class FtpConfigProperties {
     }
 
     public void saveConfigProperties(){
-        /* Not impl yet */
+        Properties prop = new Properties();
+        OutputStream output = null;
+
+        try {
+
+            output = new FileOutputStream(this.mConfigPath);
+            prop.setProperty(FTP_ADDRESS_PROPERTY, this.mFtpAddress);
+            prop.setProperty(FTP_PORT_PROPERTY, this.mFtpPort);
+            prop.setProperty(FTP_USER_PROPERTY, this.mFtpUser);
+            prop.setProperty(FTP_PASSWORD_PROPERTY, this.mFtpPassword);
+            prop.setProperty(FTP_FOLDER_PROPERTY, this.mFtpFolder);
+            prop.setProperty(SMS_FOLDER_PROPERTY, this.mSMSFolder);
+            prop.setProperty(BACKUP_FOLDER_PROPERTY, this.mBackupFolder);
+            prop.setProperty(LOOP_INTERVAL_PROPERTY, this.mLoopInterval);
+            prop.store(output, null);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
