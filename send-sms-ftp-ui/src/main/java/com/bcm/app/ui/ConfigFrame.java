@@ -30,6 +30,8 @@ public class ConfigFrame extends JFrame implements ActionListener {
     private JLabel mFtpAddressLabel;
     private JLabel mFtpPortTagLabel;
     private JLabel mFtpPortLabel;
+    private JLabel mFtpUserTagLabel;
+    private JLabel mFtpUserLabel;
     private JButton mVerifyConfigButton;
     private JButton mSaveConfigButton;
     private JButton mCancelButton;
@@ -67,14 +69,14 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpPortLabel.setBounds(136, 50, 175, 16);
         this.getContentPane().add(mFtpPortLabel);
 
-        /* debug*/
-        System.out.println(ftpConfigProperties.getFtpUser());
-        System.out.println(ftpConfigProperties.getFtpPassword());
-        System.out.println(ftpConfigProperties.getFtpFolder());
-        System.out.println(ftpConfigProperties.getSMSFolder());
-        System.out.println(ftpConfigProperties.getBackupFolder());
-        System.out.println(ftpConfigProperties.getLoopInterval());
-        /* /debug*/
+        /*Ftp user */
+        mFtpUserTagLabel = new JLabel("Ftp User: ");
+        mFtpUserTagLabel.setBounds(26, 75, 100, 16);
+        this.getContentPane().add(mFtpUserTagLabel);
+        
+        mFtpUserLabel= new JLabel(ftpConfigProperties.getFtpUser());
+        mFtpUserLabel.setBounds(136, 75, 175, 16);
+        this.getContentPane().add(mFtpUserLabel);
 
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
