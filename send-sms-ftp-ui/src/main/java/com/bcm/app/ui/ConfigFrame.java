@@ -67,6 +67,15 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpPortLabel.setBounds(136, 50, 175, 16);
         this.getContentPane().add(mFtpPortLabel);
 
+        /* debug*/
+        System.out.println(ftpConfigProperties.getFtpUser());
+        System.out.println(ftpConfigProperties.getFtpPassword());
+        System.out.println(ftpConfigProperties.getFtpFolder());
+        System.out.println(ftpConfigProperties.getSMSFolder());
+        System.out.println(ftpConfigProperties.getBackupFolder());
+        System.out.println(ftpConfigProperties.getLoopInterval());
+        /* /debug*/
+
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
         mVerifyConfigButton.setBounds(26, 260, 80, 35);
