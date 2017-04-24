@@ -2,6 +2,7 @@ package com.bcm.app.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,28 +28,28 @@ public class ConfigFrame extends JFrame implements ActionListener {
 
     /* Load Config Frame properties */
     private JLabel mFtpAddressTagLabel;
-    private JLabel mFtpAddressLabel;
+    private JTextField mFtpAddressField;
     
     private JLabel mFtpPortTagLabel;
-    private JLabel mFtpPortLabel;
+    private JTextField mFtpPortField;
 
     private JLabel mFtpUserTagLabel;
-    private JLabel mFtpUserLabel;
+    private JTextField mFtpUserField;
 
     private JLabel mFtpPasswordTagLabel;
-    private JLabel mFtpPasswordLabel;
+    private JTextField mFtpPasswordField;
 
     private JLabel mFtpFolderTagLabel;
-    private JLabel mFtpFolderLabel;
+    private JTextField mFtpFolderField;
 
     private JLabel mSMSFolderTagLabel;
-    private JLabel mSMSFolderLabel;
+    private JTextField mSMSFolderField;
 
     private JLabel mBackupFolderTagLabel;
-    private JLabel mBackupFolderLabel;
+    private JTextField mBackupFolderField;
     
     private JLabel mLoopIntervalTagLabel;
-    private JLabel mLoopIntervalLabel;
+    private JTextField mLoopIntervalField;
     
     private JButton mVerifyConfigButton;
     private JButton mSaveConfigButton;
@@ -74,72 +75,72 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpAddressTagLabel.setBounds(26, 25, 100, 16);
         this.getContentPane().add(mFtpAddressTagLabel);
         
-        mFtpAddressLabel = new JLabel(ftpConfigProperties.getFtpAddress());
-        mFtpAddressLabel.setBounds(136, 25, 175, 16);
-        this.getContentPane().add(mFtpAddressLabel);
+        mFtpAddressField = new JTextField(ftpConfigProperties.getFtpAddress());
+        mFtpAddressField.setBounds(136, 25, 175, 16);
+        this.getContentPane().add(mFtpAddressField);
         
         /*Ftp port */
         mFtpPortTagLabel = new JLabel("Ftp Port: ");
         mFtpPortTagLabel.setBounds(26, 50, 100, 16);
         this.getContentPane().add(mFtpPortTagLabel);
         
-        mFtpPortLabel= new JLabel(ftpConfigProperties.getFtpPort());
-        mFtpPortLabel.setBounds(136, 50, 175, 16);
-        this.getContentPane().add(mFtpPortLabel);
+        mFtpPortField= new JTextField(ftpConfigProperties.getFtpPort());
+        mFtpPortField.setBounds(136, 50, 175, 16);
+        this.getContentPane().add(mFtpPortField);
 
         /*Ftp user */
         mFtpUserTagLabel = new JLabel("Ftp User: ");
         mFtpUserTagLabel.setBounds(26, 75, 100, 16);
         this.getContentPane().add(mFtpUserTagLabel);
         
-        mFtpUserLabel= new JLabel(ftpConfigProperties.getFtpUser());
-        mFtpUserLabel.setBounds(136, 75, 175, 16);
-        this.getContentPane().add(mFtpUserLabel);
+        mFtpUserField= new JTextField(ftpConfigProperties.getFtpUser());
+        mFtpUserField.setBounds(136, 75, 175, 16);
+        this.getContentPane().add(mFtpUserField);
 
         /*Ftp password */
         mFtpPasswordTagLabel = new JLabel("Ftp Password: ");
         mFtpPasswordTagLabel.setBounds(26, 100, 100, 16);
         this.getContentPane().add(mFtpPasswordTagLabel);
         
-        mFtpPasswordLabel= new JLabel(ftpConfigProperties.getFtpPassword());
-        mFtpPasswordLabel.setBounds(136, 100, 175, 16);
-        this.getContentPane().add(mFtpPasswordLabel);
+        mFtpPasswordField= new JTextField(ftpConfigProperties.getFtpPassword());
+        mFtpPasswordField.setBounds(136, 100, 175, 16);
+        this.getContentPane().add(mFtpPasswordField);
 
         /*Ftp Folder */
         mFtpFolderTagLabel = new JLabel("Ftp Folder: ");
         mFtpFolderTagLabel.setBounds(26, 125, 100, 16);
         this.getContentPane().add(mFtpFolderTagLabel);
         
-        mFtpFolderLabel= new JLabel(ftpConfigProperties.getFtpFolder());
-        mFtpFolderLabel.setBounds(136, 125, 175, 16);
-        this.getContentPane().add(mFtpFolderLabel);
+        mFtpFolderField= new JTextField(ftpConfigProperties.getFtpFolder());
+        mFtpFolderField.setBounds(136, 125, 175, 16);
+        this.getContentPane().add(mFtpFolderField);
 
         /*SMS Folder */
         mSMSFolderTagLabel = new JLabel("SMS Folder: ");
         mSMSFolderTagLabel.setBounds(26, 150, 100, 16);
         this.getContentPane().add(mSMSFolderTagLabel);
         
-        mSMSFolderLabel= new JLabel(ftpConfigProperties.getSMSFolder());
-        mSMSFolderLabel.setBounds(136, 150, 175, 16);
-        this.getContentPane().add(mSMSFolderLabel);
+        mSMSFolderField= new JTextField(ftpConfigProperties.getSMSFolder());
+        mSMSFolderField.setBounds(136, 150, 175, 16);
+        this.getContentPane().add(mSMSFolderField);
 
         /*Backup Folder */
         mBackupFolderTagLabel = new JLabel("Backup Folder: ");
         mBackupFolderTagLabel.setBounds(26, 175, 100, 16);
         this.getContentPane().add(mBackupFolderTagLabel);
         
-        mBackupFolderLabel= new JLabel(ftpConfigProperties.getBackupFolder());
-        mBackupFolderLabel.setBounds(136, 175, 175, 16);
-        this.getContentPane().add(mBackupFolderLabel);
+        mBackupFolderField= new JTextField(ftpConfigProperties.getBackupFolder());
+        mBackupFolderField.setBounds(136, 175, 175, 16);
+        this.getContentPane().add(mBackupFolderField);
 
         /*Loop Interval */
         mLoopIntervalTagLabel = new JLabel("Loop Interval: ");
         mLoopIntervalTagLabel.setBounds(26, 200, 100, 16);
         this.getContentPane().add(mLoopIntervalTagLabel);
         
-        mLoopIntervalLabel= new JLabel(ftpConfigProperties.getLoopInterval());
-        mLoopIntervalLabel.setBounds(136, 200, 175, 16);
-        this.getContentPane().add(mLoopIntervalLabel);
+        mLoopIntervalField= new JTextField(ftpConfigProperties.getLoopInterval());
+        mLoopIntervalField.setBounds(136, 200, 175, 16);
+        this.getContentPane().add(mLoopIntervalField);
 
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
