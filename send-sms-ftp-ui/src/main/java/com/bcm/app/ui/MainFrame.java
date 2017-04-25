@@ -27,7 +27,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private SendSMSJob mJob;
 
     @Autowired
-    private FtpConfigProperties ftpConfigProperties;
+    public FtpConfigProperties ftpConfigProperties;
 
     @Autowired
     private ConfigFrame mConfigFrame;
@@ -52,6 +52,12 @@ public class MainFrame extends JFrame implements ActionListener {
      * Init this
      */
     public void initialize() {
+        initializeJob();
+        initializeConfigFrame();
+        initializeMainFrame();
+    }
+
+    public void initializeJob() {
         /* Init sms send job */
         mJob.setFtpAddress(ftpConfigProperties.getFtpAddress());
         mJob.setFtpPort(Integer.parseInt(ftpConfigProperties.getFtpPort()));
@@ -63,9 +69,15 @@ public class MainFrame extends JFrame implements ActionListener {
         mJob.setLoopInterval(Integer.parseInt(ftpConfigProperties.getLoopInterval()));
         mJob.setLogProperties(ftpConfigProperties.getLogProperties());
         mJob.init();
+    }
 
+    public void initializeConfigFrame() {
         /* init config Frame*/
         mConfigFrame.initialize();
+        mConfigFrame.setCallbackFrame(this);
+    }
+
+    public void initializeMainFrame() {
 
         this.setBounds(100, 100, 360, 360);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,24 +142,23 @@ public class MainFrame extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e){
+
+        System.out.println("In MainFrame actionPerformed.");
         
         if (e.getSource() == this.mStartButton){
             Thread thread = new Thread(this.mJob);
             thread.start();
             this.mJobStatusLabel.setText("job started.");
-        }
-        
-        if (e.getSource() == this.mStopButton){
+        }else if (e.getSource() == this.mStopButton){
             this.mJob.setActive(false);
             this.mJobStatusLabel.setText("job ended.");
-        }
-
-        if (e.getSource() == this.mExitButton){
+        }else if (e.getSource() == this.mExitButton){
             this.dispose();
-        }
-                
-        if (e.getSource() == this.mLoadConfigButton){
+        }else if (e.getSource() == this.mLoadConfigButton){
             this.mConfigFrame.setVisible(true);
+        //}else if (e.getSource() == this.mConfigFrame.mSaveConfigButton){
+        }else{
+            System.out.println("Callback to MainFrame");
         }
     }
     

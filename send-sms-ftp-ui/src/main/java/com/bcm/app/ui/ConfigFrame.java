@@ -57,11 +57,13 @@ public class ConfigFrame extends JFrame implements ActionListener {
     private JTextField mLogPropField;
 
     private JLabel mVerifyResultLabel;
+    
+    private MainFrame mCallbackFrame;
 
     /* Buttons */
-    private JButton mVerifyConfigButton;
-    private JButton mSaveConfigButton;
-    private JButton mCancelButton;
+    public JButton mVerifyConfigButton;
+    public JButton mSaveConfigButton;
+    public JButton mCancelButton;
 
     /* Ftp Config */
     @Autowired
@@ -184,6 +186,10 @@ public class ConfigFrame extends JFrame implements ActionListener {
         this.getContentPane().add(mVerifyResultLabel);
     }
     
+    public void setCallbackFrame(MainFrame frame){
+        this.mCallbackFrame = frame;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e){
         
@@ -219,6 +225,11 @@ public class ConfigFrame extends JFrame implements ActionListener {
             ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
             ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
             ftpConfigProperties.saveConfigProperties();
+
+            /* Update mainframe properties and update the job settings */
+            /* To be implemented */
+            this.mCallbackFrame.ftpConfigProperties.refreshConfigProperties();
+            this.mCallbackFrame.initializeJob();
         }
 
         if (e.getSource() == this.mCancelButton){

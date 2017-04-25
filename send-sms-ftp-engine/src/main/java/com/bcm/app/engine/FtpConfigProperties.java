@@ -39,13 +39,18 @@ public class FtpConfigProperties {
     public FtpConfigProperties(String config){
 
         this.mConfigPath = config;
+        this.loadConfigProperties();
+
+    }
+
+    public void loadConfigProperties(){
 
         Properties prop = new Properties();
         InputStream input = null;
 
         try{
 
-            input = new FileInputStream(config);
+            input = new FileInputStream(this.mConfigPath);
             prop.load(input);
             this.mFtpAddress = prop.getProperty(FTP_ADDRESS_PROPERTY);
             this.mFtpPort = prop.getProperty(FTP_PORT_PROPERTY);
@@ -206,6 +211,10 @@ public class FtpConfigProperties {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void refreshConfigProperties(){
+        this.loadConfigProperties();
     }
 
 }
