@@ -1,18 +1,13 @@
 package com.bcm.app.ui;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import com.bcm.app.engine.FtpConfigProperties;
+import com.bcm.app.engine.SendSMSJob;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan({"com.bcm.app.ui", "com.bcm.app.engine"})
+@SpringBootApplication
 public class ApplicationConfig {
 
     public static void main(String[] args) {
@@ -26,4 +21,10 @@ public class ApplicationConfig {
     public FtpConfigProperties ftpConfigProperties(){
         return new FtpConfigProperties("config.properties");
     }
+
+    @Bean
+    public SendSMSJob mJob(){
+        return new SendSMSJob();
+    }
+
 }
