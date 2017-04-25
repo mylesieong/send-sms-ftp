@@ -6,6 +6,9 @@ import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+
 import org.springframework.stereotype.Component;
 
 public class FtpConfigProperties {
@@ -18,6 +21,7 @@ public class FtpConfigProperties {
     public final static String SMS_FOLDER_PROPERTY = "SMS_FOLDER";
     public final static String BACKUP_FOLDER_PROPERTY = "BKUP_FOLDER";
     public final static String LOOP_INTERVAL_PROPERTY = "LOOP_INTERVAL";
+    public final static String LOG_PROPERTIES_PROPERTY = "LOG_PROP";
     public final static String NA_VALUE = "N/A";
 
     private String mConfigPath;
@@ -30,6 +34,7 @@ public class FtpConfigProperties {
     private String mSMSFolder;
     private String mBackupFolder;
     private String mLoopInterval;
+    private String mLogProperties;
 
     public FtpConfigProperties(String config){
 
@@ -50,6 +55,7 @@ public class FtpConfigProperties {
             this.mSMSFolder = prop.getProperty(SMS_FOLDER_PROPERTY);
             this.mBackupFolder = prop.getProperty(BACKUP_FOLDER_PROPERTY);
             this.mLoopInterval = prop.getProperty(LOOP_INTERVAL_PROPERTY);
+            this.mLogProperties = prop.getProperty(LOG_PROPERTIES_PROPERTY);
 
         }catch (Exception e){
 
@@ -62,6 +68,7 @@ public class FtpConfigProperties {
             this.mSMSFolder = NA_VALUE;
             this.mBackupFolder = NA_VALUE;
             this.mLoopInterval = NA_VALUE;
+            this.mLogProperties = NA_VALUE;
 
         }
 
@@ -100,6 +107,10 @@ public class FtpConfigProperties {
         this.mLoopInterval = interval;
     }
     
+    public void setLogProperties(String prop){
+        this.mLogProperties = prop;
+    }
+
     /* Getters */
     public String getFtpAddress(){
         return this.mFtpAddress;
@@ -133,9 +144,45 @@ public class FtpConfigProperties {
         return this.mLoopInterval;
     }
 
+    public String getLogProperties(){
+        return this.mLogProperties;
+    }
+
     public boolean verifyFtpConnection(){
-        /* Not impl yet */
-        return true;
+        try{
+            FTPClient ftpClient = new FTPClient();
+            ftpClient.connect(this.getFtpAddress(), Integer.parseInt(this.getFtpPort()));
+
+            /* Check ftp address and port */
+            int replyCode = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(replyCode)) {
+                System.out.println("Operation failed. Server reply code: " + replyCode);
+                return false;
+            }
+
+            /* Check user and password */
+            boolean success = ftpClient.login(this.getFtpUser(), this.getFtpPassword());
+            if (!success){            
+                System.out.println("Wrong ftp settings, test skiped.");
+                return false;
+            }
+
+            /* Check upload target ftp folder existence */
+            ftpClient.changeWorkingDirectory(this.getFtpFolder());
+            if (!FTPReply.isPositiveCompletion(replyCode)){
+                System.out.println("Cannot find target ftp folder, test skipped. ");
+                return false;
+            }
+
+            ftpClient.logout();
+            ftpClient.disconnect();
+
+            return true;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void saveConfigProperties(){
@@ -153,6 +200,7 @@ public class FtpConfigProperties {
             prop.setProperty(SMS_FOLDER_PROPERTY, this.mSMSFolder);
             prop.setProperty(BACKUP_FOLDER_PROPERTY, this.mBackupFolder);
             prop.setProperty(LOOP_INTERVAL_PROPERTY, this.mLoopInterval);
+            prop.setProperty(LOG_PROPERTIES_PROPERTY, this.mLogProperties);
             prop.store(output, null);
 
         }catch (Exception e){

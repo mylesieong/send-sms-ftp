@@ -51,6 +51,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
     private JLabel mLoopIntervalTagLabel;
     private JTextField mLoopIntervalField;
     
+    private JLabel mLogPropTagLabel;
+    private JTextField mLogPropField;
+
     private JButton mVerifyConfigButton;
     private JButton mSaveConfigButton;
     private JButton mCancelButton;
@@ -142,6 +145,15 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mLoopIntervalField.setBounds(136, 200, 175, 16);
         this.getContentPane().add(mLoopIntervalField);
 
+        /* Log Config */
+        mLogPropTagLabel = new JLabel("Log Config: ");
+        mLogPropTagLabel.setBounds(26, 225, 100, 16);
+        this.getContentPane().add(mLogPropTagLabel);
+        
+        mLogPropField = new JTextField(ftpConfigProperties.getLogProperties());
+        mLogPropField.setBounds(136, 225, 175, 16);
+        this.getContentPane().add(mLogPropField);
+
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
         mVerifyConfigButton.setBounds(26, 260, 80, 35);
@@ -174,8 +186,11 @@ public class ConfigFrame extends JFrame implements ActionListener {
             ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
             ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
             ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
+            ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
             if (ftpConfigProperties.verifyFtpConnection()) {
                 System.out.println("Config integrity validated.");
+            }else{
+                System.out.println("Config integrity not valid.");
             }
         }
         
@@ -189,6 +204,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
             ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
             ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
             ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
+            ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
             ftpConfigProperties.saveConfigProperties();
         }
 
