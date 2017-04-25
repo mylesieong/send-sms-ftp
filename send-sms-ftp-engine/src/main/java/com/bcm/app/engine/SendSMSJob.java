@@ -134,9 +134,11 @@ public class SendSMSJob extends Thread {
         mLogger.debug("Job Ends.");
     }
     
+    /*
     public static void main(String[] args) {
         SendSMSJob job = new SendSMSJob(args[0]);
         job.run(); //not using thread, start using the current thread, terminated by Ctrl C in bash
     }
+    */
     
 }
