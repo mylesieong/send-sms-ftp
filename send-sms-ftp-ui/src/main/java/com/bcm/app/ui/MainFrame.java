@@ -42,15 +42,15 @@ public class MainFrame extends JFrame implements ActionListener {
     private ConfigFrame mConfigFrame;
 
     public MainFrame() {
-        mJob = new SendSMSJob();
-        mJob.setProperties("config.properties");
-        initialize();
     }
 
     /**
      * Init this
      */
-    private void initialize() {
+    public void initialize() {
+        mJob = new SendSMSJob();
+        mJob.setProperties("config.properties");
+        mConfigFrame.initialize();
 
         this.setBounds(100, 100, 360, 360);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -18,6 +18,7 @@ public class FrameLauncher implements CommandLineRunner {
             @Override
             public void run() {
                 System.out.println("******In run method******");
+                frame.initialize();
                 frame.setVisible(true);
             }
         });
