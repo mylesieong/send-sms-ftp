@@ -18,11 +18,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bcm.app.engine.SendSMSJob;
+import com.bcm.app.engine.FtpConfigProperties;
 
 @Component
 public class MainFrame extends JFrame implements ActionListener {
 
+    @Autowired
     private SendSMSJob mJob;
+
+    @Autowired
+    private FtpConfigProperties ftpConfigProperties;
+
+    @Autowired
+    private ConfigFrame mConfigFrame;
     
     /* Main Frame properties */
     private JLabel mLastSentTimeTagLabel;
@@ -37,10 +45,6 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton mLoadConfigButton;
     private JButton mExitButton;
     
-    /* Load Config Frame properties */
-    @Autowired
-    private ConfigFrame mConfigFrame;
-
     public MainFrame() {
     }
 
@@ -48,8 +52,19 @@ public class MainFrame extends JFrame implements ActionListener {
      * Init this
      */
     public void initialize() {
-        mJob = new SendSMSJob();
-        mJob.setProperties("config.properties");
+        /* Init sms send job */
+        mJob.setFtpAddress(ftpConfigProperties.getFtpAddress());
+        mJob.setFtpPort(Integer.parseInt(ftpConfigProperties.getFtpPort()));
+        mJob.setFtpUser(ftpConfigProperties.getFtpUser());
+        mJob.setFtpPassword(ftpConfigProperties.getFtpPassword());
+        mJob.setFtpFolder(ftpConfigProperties.getFtpFolder());
+        mJob.setSMSFolder(ftpConfigProperties.getSMSFolder());
+        mJob.setBackupFolder(ftpConfigProperties.getBackupFolder());
+        mJob.setLoopInterval(Integer.parseInt(ftpConfigProperties.getLoopInterval()));
+        mJob.setLogProperties(ftpConfigProperties.getLogProperties());
+        mJob.init();
+
+        /* init config Frame*/
         mConfigFrame.initialize();
 
         this.setBounds(100, 100, 360, 360);

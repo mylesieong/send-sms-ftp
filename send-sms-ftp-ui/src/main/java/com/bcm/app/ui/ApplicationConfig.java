@@ -1,13 +1,18 @@
 package com.bcm.app.ui;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import com.bcm.app.engine.FtpConfigProperties;
 
-@SpringBootApplication
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan({"com.bcm.app.ui", "com.bcm.app.engine"})
 public class ApplicationConfig {
 
     public static void main(String[] args) {
