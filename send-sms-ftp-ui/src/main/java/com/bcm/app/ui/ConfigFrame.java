@@ -54,6 +54,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
     private JLabel mLogPropTagLabel;
     private JTextField mLogPropField;
 
+    private JLabel mVerifyResultLabel;
+
+    /* Buttons */
     private JButton mVerifyConfigButton;
     private JButton mSaveConfigButton;
     private JButton mCancelButton;
@@ -164,6 +167,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mSaveConfigButton = new JButton("Save");
         mSaveConfigButton.setBounds(116, 260, 80, 35);
         mSaveConfigButton.addActionListener(this);
+        mSaveConfigButton.setEnabled(false);
         this.getContentPane().add(mSaveConfigButton);
 
         /* Button: Cancel1 */
@@ -171,6 +175,11 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mCancelButton.setBounds(206, 260, 80, 35);
         mCancelButton.addActionListener(this);
         this.getContentPane().add(mCancelButton);
+
+        /* Verify Result Label */
+        mVerifyResultLabel = new JLabel();
+        mVerifyResultLabel.setBounds(26, 300, 275, 16);
+        this.getContentPane().add(mVerifyResultLabel);
     }
     
     @Override
@@ -188,9 +197,11 @@ public class ConfigFrame extends JFrame implements ActionListener {
             ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
             ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
             if (ftpConfigProperties.verifyFtpConnection()) {
-                System.out.println("Config integrity validated.");
+                mVerifyResultLabel.setText("Config integrity validated.");
+                mSaveConfigButton.setEnabled(true);
             }else{
-                System.out.println("Config integrity not valid.");
+                mVerifyResultLabel.setText("Config not valid.");
+                mSaveConfigButton.setEnabled(false);
             }
         }
         
