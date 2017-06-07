@@ -10,8 +10,8 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -26,7 +26,7 @@ import org.sqlite.SQLiteDataSource;
 import com.bcm.app.engine.FtpConfigProperties;
 
 @Component
-public class ConfigFrame extends JFrame implements ActionListener {
+public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
     /* Load Config Frame properties */
     private JLabel mFtpAddressTagLabel;
@@ -72,10 +72,7 @@ public class ConfigFrame extends JFrame implements ActionListener {
     public ConfigFrame() {
     }
 
-    /**
-     * Init this
-     */
-    public void initialize() {
+    private void initializeComponent(){
         this.setBounds(100, 100, 360, 360);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.getContentPane().setLayout(null);
@@ -85,8 +82,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpAddressTagLabel.setBounds(26, 25, 100, 16);
         this.getContentPane().add(mFtpAddressTagLabel);
         
-        mFtpAddressField = new JTextField(ftpConfigProperties.getFtpAddress());
+        mFtpAddressField = new JTextField();
         mFtpAddressField.setBounds(136, 25, 175, 16);
+        mFtpAddressField.addKeyListener(this);
         this.getContentPane().add(mFtpAddressField);
         
         /*Ftp port */
@@ -94,8 +92,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpPortTagLabel.setBounds(26, 50, 100, 16);
         this.getContentPane().add(mFtpPortTagLabel);
         
-        mFtpPortField= new JTextField(ftpConfigProperties.getFtpPort());
+        mFtpPortField= new JTextField();
         mFtpPortField.setBounds(136, 50, 175, 16);
+        mFtpPortField.addKeyListener(this);
         this.getContentPane().add(mFtpPortField);
 
         /*Ftp user */
@@ -103,8 +102,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpUserTagLabel.setBounds(26, 75, 100, 16);
         this.getContentPane().add(mFtpUserTagLabel);
         
-        mFtpUserField= new JTextField(ftpConfigProperties.getFtpUser());
+        mFtpUserField= new JTextField();
         mFtpUserField.setBounds(136, 75, 175, 16);
+        mFtpUserField.addKeyListener(this);
         this.getContentPane().add(mFtpUserField);
 
         /*Ftp password */
@@ -112,8 +112,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpPasswordTagLabel.setBounds(26, 100, 100, 16);
         this.getContentPane().add(mFtpPasswordTagLabel);
         
-        mFtpPasswordField= new JTextField(ftpConfigProperties.getFtpPassword());
+        mFtpPasswordField= new JTextField();
         mFtpPasswordField.setBounds(136, 100, 175, 16);
+        mFtpPasswordField.addKeyListener(this);
         this.getContentPane().add(mFtpPasswordField);
 
         /*Ftp Folder */
@@ -121,8 +122,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mFtpFolderTagLabel.setBounds(26, 125, 100, 16);
         this.getContentPane().add(mFtpFolderTagLabel);
         
-        mFtpFolderField= new JTextField(ftpConfigProperties.getFtpFolder());
+        mFtpFolderField= new JTextField();
         mFtpFolderField.setBounds(136, 125, 175, 16);
+        mFtpFolderField.addKeyListener(this);
         this.getContentPane().add(mFtpFolderField);
 
         /*SMS Folder */
@@ -130,8 +132,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mSMSFolderTagLabel.setBounds(26, 150, 100, 16);
         this.getContentPane().add(mSMSFolderTagLabel);
         
-        mSMSFolderField= new JTextField(ftpConfigProperties.getSMSFolder());
+        mSMSFolderField= new JTextField();
         mSMSFolderField.setBounds(136, 150, 175, 16);
+        mSMSFolderField.addKeyListener(this);
         this.getContentPane().add(mSMSFolderField);
 
         /*Backup Folder */
@@ -139,8 +142,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mBackupFolderTagLabel.setBounds(26, 175, 100, 16);
         this.getContentPane().add(mBackupFolderTagLabel);
         
-        mBackupFolderField= new JTextField(ftpConfigProperties.getBackupFolder());
+        mBackupFolderField= new JTextField();
         mBackupFolderField.setBounds(136, 175, 175, 16);
+        mBackupFolderField.addKeyListener(this);
         this.getContentPane().add(mBackupFolderField);
 
         /*Loop Interval */
@@ -148,8 +152,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mLoopIntervalTagLabel.setBounds(26, 200, 100, 16);
         this.getContentPane().add(mLoopIntervalTagLabel);
         
-        mLoopIntervalField= new JTextField(ftpConfigProperties.getLoopInterval());
+        mLoopIntervalField= new JTextField();
         mLoopIntervalField.setBounds(136, 200, 175, 16);
+        mLoopIntervalField.addKeyListener(this);
         this.getContentPane().add(mLoopIntervalField);
 
         /* Log Config */
@@ -157,8 +162,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mLogPropTagLabel.setBounds(26, 225, 100, 16);
         this.getContentPane().add(mLogPropTagLabel);
         
-        mLogPropField = new JTextField(ftpConfigProperties.getLogProperties());
+        mLogPropField = new JTextField();
         mLogPropField.setBounds(136, 225, 175, 16);
+        mLogPropField.addKeyListener(this);
         this.getContentPane().add(mLogPropField);
 
         /* Button: verify */
@@ -185,6 +191,14 @@ public class ConfigFrame extends JFrame implements ActionListener {
         mVerifyResultLabel.setBounds(26, 300, 275, 16);
         this.getContentPane().add(mVerifyResultLabel);
     }
+
+    /**
+     * Init this
+     */
+    public void initialize() {
+        initializeComponent();
+        bindPropertiesToFields();
+    }
     
     public void setCallbackFrame(MainFrame frame){
         this.mCallbackFrame = frame;
@@ -194,16 +208,9 @@ public class ConfigFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         
         if (e.getSource() == this.mVerifyConfigButton){
-            System.out.println("Verify config");
-            ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
-            ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
-            ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
-            ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
-            ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
-            ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
-            ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
-            ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
-            ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
+
+            bindFieldsToProperties();
+
             if (ftpConfigProperties.verifyFtpConnection()) {
                 mVerifyResultLabel.setText("Config integrity validated.");
                 mSaveConfigButton.setEnabled(true);
@@ -214,28 +221,65 @@ public class ConfigFrame extends JFrame implements ActionListener {
         }
         
         if (e.getSource() == this.mSaveConfigButton){
-            System.out.println("Save config");
-            ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
-            ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
-            ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
-            ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
-            ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
-            ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
-            ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
-            ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
-            ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
-            ftpConfigProperties.saveConfigProperties();
 
             /* Update mainframe properties and update the job settings */
-            /* To be implemented */
+            this.ftpConfigProperties.saveConfigProperties();
             this.mCallbackFrame.ftpConfigProperties.refreshConfigProperties();
             this.mCallbackFrame.initializeJob();
+
         }
 
         if (e.getSource() == this.mCancelButton){
+
+            /* Reload properties before change */
+            this.ftpConfigProperties.refreshConfigProperties();
+            bindPropertiesToFields();
             this.setVisible(false);
+
         }
                 
+    }
+
+    private void bindFieldsToProperties(){
+        ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
+        ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
+        ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
+        ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
+        ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
+        ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
+        ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
+        ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
+        ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
+    }
+
+    private void bindPropertiesToFields(){
+        mFtpAddressField.setText(ftpConfigProperties.getFtpAddress());
+        mFtpPortField.setText(ftpConfigProperties.getFtpPort());
+        mFtpUserField.setText(ftpConfigProperties.getFtpUser());
+        mFtpPasswordField.setText(ftpConfigProperties.getFtpPassword());
+        mFtpFolderField.setText(ftpConfigProperties.getFtpFolder());
+        mSMSFolderField.setText(ftpConfigProperties.getSMSFolder());
+        mBackupFolderField.setText(ftpConfigProperties.getBackupFolder());
+        mLoopIntervalField.setText(ftpConfigProperties.getLoopInterval());
+        mLogPropField.setText(ftpConfigProperties.getLogProperties());
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event){
+        System.out.println("Key pressed");
+        this.mSaveConfigButton.setEnabled(false);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event){
+        System.out.println("Key release");
+        this.mSaveConfigButton.setEnabled(false);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent event){
+        System.out.println("Key type");
+        this.mSaveConfigButton.setEnabled(false);
     }
 
 }
