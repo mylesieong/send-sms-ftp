@@ -1,13 +1,6 @@
 package com.bcm.app.ui;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JDialog;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -223,10 +216,20 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         
         if (e.getSource() == this.mSaveConfigButton){
 
-            /* Update mainframe properties and update the job settings */
-            this.ftpConfigProperties.saveConfigProperties();
-            this.mCallbackFrame.ftpConfigProperties.refreshConfigProperties();
-            this.mCallbackFrame.initializeJob();
+            /* Prompt a password verify dialog */
+            String pwd = ftpConfigProperties.getFtpPassword();
+            String pwdBeta = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Old password" + pwd + " & new password" + pwdBeta);
+
+            if (pwd.compareTo(pwdBeta) == 0){
+                /* Update mainframe properties and update the job settings */
+                this.ftpConfigProperties.saveConfigProperties();
+                this.mCallbackFrame.ftpConfigProperties.refreshConfigProperties();
+                this.mCallbackFrame.initializeJob();
+                JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Wrong password!", "Result", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
 
@@ -236,8 +239,6 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
             this.ftpConfigProperties.refreshConfigProperties();
             bindPropertiesToFields();
             this.setVisible(false);
-            /* debgu*/
-            /*debug*/ System.out.println(mFtpPasswordField.getText());
 
         }
                 
