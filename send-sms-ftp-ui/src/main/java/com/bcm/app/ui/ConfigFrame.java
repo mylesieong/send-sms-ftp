@@ -3,6 +3,7 @@ package com.bcm.app.ui;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -39,7 +40,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     private JTextField mFtpUserField;
 
     private JLabel mFtpPasswordTagLabel;
-    private JTextField mFtpPasswordField;
+    private JPasswordField mFtpPasswordField;
 
     private JLabel mFtpFolderTagLabel;
     private JTextField mFtpFolderField;
@@ -112,7 +113,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpPasswordTagLabel.setBounds(26, 100, 100, 16);
         this.getContentPane().add(mFtpPasswordTagLabel);
         
-        mFtpPasswordField= new JTextField();
+        mFtpPasswordField= new JPasswordField();
         mFtpPasswordField.setBounds(136, 100, 175, 16);
         mFtpPasswordField.addKeyListener(this);
         this.getContentPane().add(mFtpPasswordField);
@@ -235,6 +236,8 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
             this.ftpConfigProperties.refreshConfigProperties();
             bindPropertiesToFields();
             this.setVisible(false);
+            /* debgu*/
+            /*debug*/ System.out.println(mFtpPasswordField.getText());
 
         }
                 
