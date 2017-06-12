@@ -219,7 +219,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
             /* Prompt a password verify dialog */
             String pwd = ftpConfigProperties.getFtpPassword();
             String pwdBeta = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
-            System.out.println("Old password" + pwd + " & new password" + pwdBeta);
+            System.out.println("Verified password" + pwd + " & Input password" + pwdBeta);
 
             if (pwd.compareTo(pwdBeta) == 0){
                 /* Update mainframe properties and update the job settings */
