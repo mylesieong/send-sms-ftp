@@ -40,9 +40,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private JLabel mMomentLabel;
     private JButton mStartButton;
     private JButton mStopButton;
-    private JButton mExportLogButton;
-    private JButton mClearLogButton;
-    private JButton mLoadConfigButton;
+    private JButton mChangeConfigButton;
     
     public MainFrame() {
     }
@@ -109,29 +107,20 @@ public class MainFrame extends JFrame implements ActionListener {
         
         /* Button: Start and stop */
         mStartButton = new JButton("Start Send SMS");
-        mStartButton.setBounds(26, 154, 125, 25);
+        mStartButton.setBounds(26, 154, 300, 25);
         mStartButton.addActionListener(this);
         this.getContentPane().add(mStartButton);
         
         mStopButton = new JButton("Stop Send SMS");
-        mStopButton.setBounds(186, 154, 125, 25);
+        mStopButton.setBounds(26, 190, 300, 25);
         mStopButton.addActionListener(this);
         this.getContentPane().add(mStopButton);
         
-        /* Button: log export and log clear */
-        mExportLogButton = new JButton("Export Log File");
-        mExportLogButton.setBounds(26, 188, 125, 25);
-        this.getContentPane().add(mExportLogButton);
-        
-        mClearLogButton = new JButton("Clear Log File");
-        mClearLogButton.setBounds(186, 188, 125, 25);
-        this.getContentPane().add(mClearLogButton);
-        
         /* Change config button*/
-        mLoadConfigButton = new JButton("Change Configuration");
-        mLoadConfigButton.setBounds(26, 224, 285, 25);
-        mLoadConfigButton.addActionListener(this);
-        this.getContentPane().add(mLoadConfigButton);
+        mChangeConfigButton = new JButton("Change Configuration");
+        mChangeConfigButton.setBounds(26, 224, 300, 25);
+        mChangeConfigButton.addActionListener(this);
+        this.getContentPane().add(mChangeConfigButton);
 
         this.setResizable(false);
         
@@ -143,18 +132,28 @@ public class MainFrame extends JFrame implements ActionListener {
         System.out.println("In MainFrame actionPerformed.");
         
         if (e.getSource() == this.mStartButton){
+
             Thread thread = new Thread(this.mJob);
             thread.start();
             this.mJobStatusLabel.setText("job started.");
+
         }else if (e.getSource() == this.mStopButton){
+
             this.mJob.setActive(false);
-            this.mJobStatusLabel.setText("job ended.");
-        }else if (e.getSource() == this.mLoadConfigButton){
+            if (this.mJobStatusLabel.getText().compareTo("job started.") == 0 ){
+                this.mJobStatusLabel.setText("job ended.");
+            }
+            
+        }else if (e.getSource() == this.mChangeConfigButton){
+
             this.mConfigFrame.setVisible(true);
-        //}else if (e.getSource() == this.mConfigFrame.mSaveConfigButton){
+
         }else{
+
             System.out.println("Callback to MainFrame");
+
         }
+
     }
     
 
