@@ -43,7 +43,6 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton mExportLogButton;
     private JButton mClearLogButton;
     private JButton mLoadConfigButton;
-    private JButton mExitButton;
     
     public MainFrame() {
     }
@@ -79,7 +78,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public void initializeMainFrame() {
 
-        this.setBounds(100, 100, 360, 360);
+        this.setBounds(100, 100, 360, 320);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(null);
         
@@ -133,11 +132,9 @@ public class MainFrame extends JFrame implements ActionListener {
         mLoadConfigButton.setBounds(26, 224, 285, 25);
         mLoadConfigButton.addActionListener(this);
         this.getContentPane().add(mLoadConfigButton);
+
+        this.setResizable(false);
         
-        /* Exit button */
-        mExitButton = new JButton("Exit");
-        mExitButton.setBounds(26, 260, 285, 25);
-        this.getContentPane().add(mExitButton);
     }
     
     @Override
@@ -152,8 +149,6 @@ public class MainFrame extends JFrame implements ActionListener {
         }else if (e.getSource() == this.mStopButton){
             this.mJob.setActive(false);
             this.mJobStatusLabel.setText("job ended.");
-        }else if (e.getSource() == this.mExitButton){
-            this.dispose();
         }else if (e.getSource() == this.mLoadConfigButton){
             this.mConfigFrame.setVisible(true);
         //}else if (e.getSource() == this.mConfigFrame.mSaveConfigButton){
