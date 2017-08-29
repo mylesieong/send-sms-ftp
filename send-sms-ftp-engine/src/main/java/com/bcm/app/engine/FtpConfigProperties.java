@@ -21,6 +21,7 @@ public class FtpConfigProperties {
     public final static String SMS_FOLDER_PROPERTY = "SMS_FOLDER";
     public final static String BACKUP_FOLDER_PROPERTY = "BKUP_FOLDER";
     public final static String LOOP_INTERVAL_PROPERTY = "LOOP_INTERVAL";
+    public final static String FILE_TYPE_PROPERTY = "FILE_TYPE";
     public final static String LOG_PROPERTIES_PROPERTY = "LOG_PROP";
     public final static String NA_VALUE = "N/A";
 
@@ -34,6 +35,7 @@ public class FtpConfigProperties {
     private String mSMSFolder;
     private String mBackupFolder;
     private String mLoopInterval;
+    private String mFileType;
     private String mLogProperties;
 
     public FtpConfigProperties(String config){
@@ -60,6 +62,7 @@ public class FtpConfigProperties {
             this.mSMSFolder = prop.getProperty(SMS_FOLDER_PROPERTY);
             this.mBackupFolder = prop.getProperty(BACKUP_FOLDER_PROPERTY);
             this.mLoopInterval = prop.getProperty(LOOP_INTERVAL_PROPERTY);
+            this.mFileType = prop.getProperty(FILE_TYPE_PROPERTY);
             this.mLogProperties = prop.getProperty(LOG_PROPERTIES_PROPERTY);
 
         }catch (Exception e){
@@ -73,6 +76,7 @@ public class FtpConfigProperties {
             this.mSMSFolder = NA_VALUE;
             this.mBackupFolder = NA_VALUE;
             this.mLoopInterval = NA_VALUE;
+            this.mFileType = NA_VALUE;
             this.mLogProperties = NA_VALUE;
 
         }
@@ -112,6 +116,10 @@ public class FtpConfigProperties {
         this.mLoopInterval = interval;
     }
     
+    public void setFileType(String type){
+        this.mFileType = type;
+    }
+
     public void setLogProperties(String prop){
         this.mLogProperties = prop;
     }
@@ -147,6 +155,10 @@ public class FtpConfigProperties {
 
     public String getLoopInterval(){
         return this.mLoopInterval;
+    }
+
+    public String getFileType(){
+        return this.mFileType;
     }
 
     public String getLogProperties(){
@@ -205,6 +217,7 @@ public class FtpConfigProperties {
             prop.setProperty(SMS_FOLDER_PROPERTY, this.mSMSFolder);
             prop.setProperty(BACKUP_FOLDER_PROPERTY, this.mBackupFolder);
             prop.setProperty(LOOP_INTERVAL_PROPERTY, this.mLoopInterval);
+            prop.setProperty(FILE_TYPE_PROPERTY, this.mFileType);
             prop.setProperty(LOG_PROPERTIES_PROPERTY, this.mLogProperties);
             prop.store(output, null);
 

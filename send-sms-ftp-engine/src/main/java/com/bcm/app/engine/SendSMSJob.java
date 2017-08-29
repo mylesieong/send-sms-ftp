@@ -29,6 +29,7 @@ public class SendSMSJob extends Thread {
     private String mSMSFolder;
     private String mBackupFolder;
     private int mLoopInterval;
+    private String mFileType;
     private String mLogProperties;   
 
     public SendSMSJob(){
@@ -43,6 +44,7 @@ public class SendSMSJob extends Thread {
         /* Set up FileRegister, inject into LogProxy and push into ProcessChain*/
         FileManipulatorLogProxy register = new FileManipulatorLogProxy();
         FileRegister realRegister = new FileRegister(); 
+        realRegister.setFileType(this.mFileType);
         register.setName("REGISTER");
         register.setRealObject(realRegister);
         this.mProcessChain.add(register);
@@ -102,6 +104,10 @@ public class SendSMSJob extends Thread {
     
     public void setLoopInterval(int interval){
         this.mLoopInterval = interval;
+    }
+    
+    public void setFileType(String type){
+        this.mFileType = type;
     }
     
     public void setLogProperties(String path){

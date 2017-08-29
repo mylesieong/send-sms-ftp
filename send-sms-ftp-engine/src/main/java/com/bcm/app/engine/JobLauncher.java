@@ -26,6 +26,7 @@ public class JobLauncher implements CommandLineRunner {
         sendSMSJob.setSMSFolder(ftpConfigProperties.getSMSFolder());
         sendSMSJob.setBackupFolder(ftpConfigProperties.getBackupFolder());
         sendSMSJob.setLoopInterval(Integer.parseInt(ftpConfigProperties.getLoopInterval()));
+        sendSMSJob.setFileType(ftpConfigProperties.getFileType());
         sendSMSJob.setLogProperties(ftpConfigProperties.getLogProperties());
 
         sendSMSJob.init();

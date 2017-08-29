@@ -12,7 +12,9 @@ public class FileRegisterTest{
     @Before
     public void createInstance(){
         // Reset the object e
-        messageRegister = new FileRegister();
+        FileRegister register = new FileRegister();
+        register.setFileType("txt");
+        messageRegister = register;
     }
     
     @Test
@@ -67,6 +69,23 @@ public class FileRegisterTest{
             messageRegister.setFile(f);        
             messageRegister.manipulate();
             assertEquals(messageRegister.isSuccess(), true);
+            f.delete();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test 
+    public void testFailureAfterManipulateWithExistingFileWithDiffType(){
+        try{
+            String path = System.getProperty("user.dir");
+            File f = new File(path + "\\test.ini");
+            if(!f.exists()){
+                f.createNewFile();
+            }
+            messageRegister.setFile(f);        
+            messageRegister.manipulate();
+            assertEquals(messageRegister.isSuccess(), false);
             f.delete();
         }catch (Exception e){
             e.printStackTrace();
