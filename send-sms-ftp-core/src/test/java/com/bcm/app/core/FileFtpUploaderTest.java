@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
-public class MessageFtpUploaderTest{
+public class FileFtpUploaderTest{
     
     private static final String FTP_ADDRESS = "172.18.255.108";
     private static final int FTP_PORT = 21;
@@ -21,12 +21,12 @@ public class MessageFtpUploaderTest{
     private static final String FTP_PASSWORD = "IToper01";
     private static final String FTP_FOLDER = "Test";
     
-    private MessageFtpUploader messageFtpUploader;
+    private FileFtpUploader messageFtpUploader;
     
     @Before
     public void createInstance(){
         // Reset the object e
-        messageFtpUploader = new MessageFtpUploader();
+        messageFtpUploader = new FileFtpUploader();
         messageFtpUploader.setFtpAddress(FTP_ADDRESS);
         messageFtpUploader.setFtpPort(FTP_PORT);
         messageFtpUploader.setFtpUser(FTP_USER);

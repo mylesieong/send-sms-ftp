@@ -5,14 +5,14 @@ import org.junit.*;
 
 import java.io.File;
 
-public class MessageRegisterTest{
+public class FileRegisterTest{
 
     private FileManipulator messageRegister;
     
     @Before
     public void createInstance(){
         // Reset the object e
-        messageRegister = new MessageRegister();
+        messageRegister = new FileRegister();
     }
     
     @Test

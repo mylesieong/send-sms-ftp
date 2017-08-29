@@ -19,14 +19,14 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class MessageBackuperTest{
+public class FileBackuperTest{
     
-    private MessageBackuper messageBackuper;
+    private FileBackuper messageBackuper;
     
     @Before
     public void createInstance(){
         // Reset the object e
-        messageBackuper = new MessageBackuper();
+        messageBackuper = new FileBackuper();
     }
     
     @Test

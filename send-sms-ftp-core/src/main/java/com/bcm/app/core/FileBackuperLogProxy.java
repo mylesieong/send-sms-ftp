@@ -3,9 +3,9 @@ package com.bcm.app.core;
 import org.apache.log4j.Logger;
 import java.io.File;
 
-public class MessageBackuperLogProxy extends MessageBackuper{
+public class FileBackuperLogProxy extends FileBackuper{
     
-    final static Logger mLogger = Logger.getLogger(MessageBackuperLogProxy.class);
+    final static Logger mLogger = Logger.getLogger(FileBackuperLogProxy.class);
     
     final static String LOG_MANIPULATE_BEGINNING = "Prepare to back up message file: ";
     final static String LOG_MANIPULATE_DONE_SUCCESS = "Back-up performed for file: ";

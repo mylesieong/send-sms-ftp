@@ -4,7 +4,7 @@ import java.io.*;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
-public class MessageFtpUploader implements FileManipulator{
+public class FileFtpUploader implements FileManipulator{
     
     private File mFile;
     private boolean mIsSuccess = false;
@@ -68,7 +68,7 @@ public class MessageFtpUploader implements FileManipulator{
     };    
     
     /**
-     * Method manipulate in MessageUploader will check the 
+     * Method manipulate in FileUploader will check the 
      * existence of the file set to the object
      */
     @Override

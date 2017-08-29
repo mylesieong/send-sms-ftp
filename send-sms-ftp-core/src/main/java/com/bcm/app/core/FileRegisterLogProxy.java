@@ -3,9 +3,9 @@ package com.bcm.app.core;
 import org.apache.log4j.Logger;
 import java.io.File;
 
-public class MessageRegisterLogProxy extends MessageRegister{
+public class FileRegisterLogProxy extends FileRegister{
     
-    private final Logger mLogger = Logger.getLogger(MessageRegisterLogProxy.class);
+    private final Logger mLogger = Logger.getLogger(FileRegisterLogProxy.class);
     
     private final String LOG_MANIPULATE_BEGINNING = "Verifying file: ";
     private final String LOG_MANIPULATE_DONE_SUCCESS = "Register performed for file: ";

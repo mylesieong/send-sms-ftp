@@ -2,7 +2,7 @@ package com.bcm.app.core;
 
 import java.io.File;
 
-public class MessageRegister implements FileManipulator{
+public class FileRegister implements FileManipulator{
     
     private File mFile;
     private boolean mIsSuccess = false;
@@ -19,7 +19,7 @@ public class MessageRegister implements FileManipulator{
     };    
     
     /**
-     * Method manipulate in MessageRegister will check the 
+     * Method manipulate in FileRegister will check the 
      * existence of the file set to the object
      */
     @Override

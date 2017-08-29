@@ -3,9 +3,9 @@ package com.bcm.app.core;
 import org.apache.log4j.Logger;
 import java.io.File;
 
-public class MessageFtpUploaderLogProxy extends MessageFtpUploader{
+public class FileFtpUploaderLogProxy extends FileFtpUploader{
     
-    private final Logger mLogger = Logger.getLogger(MessageFtpUploaderLogProxy.class);
+    private final Logger mLogger = Logger.getLogger(FileFtpUploaderLogProxy.class);
     
     private final String LOG_MANIPULATE_BEGINNING = "Prepare to upload message file to FTP: ";
     private final String LOG_MANIPULATE_DONE_SUCCESS = "Upload performed for file: ";

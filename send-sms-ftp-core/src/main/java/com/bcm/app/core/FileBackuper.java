@@ -12,12 +12,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * Class MessageBackuper will copy input file and paste to a backup folder path
+ * Class FileBackuper will copy input file and paste to a backup folder path
  * with the copied file name appending a datetime (YYYYMMDDTTMMSS)
  * 
- * note: MessageBackuper will not change the original file.
+ * note: FileBackuper will not change the original file.
  */
-public class MessageBackuper implements FileManipulator{
+public class FileBackuper implements FileManipulator{
     
     private File mFile;
     private boolean mIsSuccess = false;
@@ -45,7 +45,7 @@ public class MessageBackuper implements FileManipulator{
     };    
     
     /**
-     * Method manipulate in MessageRegister will check the 
+     * Method manipulate in FileRegister will check the 
      * existence of the file set to the object
      */
     @Override
