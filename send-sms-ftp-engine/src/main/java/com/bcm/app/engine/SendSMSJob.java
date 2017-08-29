@@ -39,26 +39,35 @@ public class SendSMSJob extends Thread {
         this.mIsActive = false;
 
         this.mProcessChain = new ArrayList<FileManipulator>();
-        /* Set up MessageRegisterLogProxy */
-        MessageRegisterLogProxy messageRegisterLogProxy = new MessageRegisterLogProxy();
-        
-        /* Set up MessageFtpUploaderLogProxy */
-        MessageFtpUploaderLogProxy messageFtpUploaderLogProxy = new MessageFtpUploaderLogProxy();
-        messageFtpUploaderLogProxy.setFtpAddress(this.mFtpAddress);
-        messageFtpUploaderLogProxy.setFtpPort(this.mFtpPort);
-        messageFtpUploaderLogProxy.setFtpUser(this.mFtpUser);
-        messageFtpUploaderLogProxy.setFtpPassword(this.mFtpPassword);
-        messageFtpUploaderLogProxy.setFtpFolder(this.mFtpFolder);
-        
-        /* Set up MessageBackuperLogProxy */
-        MessageBackuperLogProxy messageBackuperLogProxy = new MessageBackuperLogProxy();
-        messageBackuperLogProxy.setPath(this.mBackupFolder);
-        
-        this.mProcessChain.add(messageRegisterLogProxy);
-        this.mProcessChain.add(messageFtpUploaderLogProxy);
-        this.mProcessChain.add(messageBackuperLogProxy);
 
-        /* Ddynamic configuration of log setting */
+        /* Set up FileRegister, inject into LogProxy and push into ProcessChain*/
+        FileManipulatorLogProxy register = new FileManipulatorLogProxy();
+        FileRegister realRegister = new FileRegister(); 
+        register.setName("REGISTER");
+        register.setRealObject(realRegister);
+        this.mProcessChain.add(register);
+        
+        /* Set up FileFtpUploader, inject into LogProxy and push into ProcessChain*/
+        FileManipulatorLogProxy ftpUploader = new FileManipulatorLogProxy();
+        FileFtpUploader realFtpUploader = new FileFtpUploader();
+        realFtpUploader.setFtpAddress(this.mFtpAddress);
+        realFtpUploader.setFtpPort(this.mFtpPort);
+        realFtpUploader.setFtpUser(this.mFtpUser);
+        realFtpUploader.setFtpPassword(this.mFtpPassword);
+        realFtpUploader.setFtpFolder(this.mFtpFolder);
+        ftpUploader.setName("FTPUPLOADER");
+        ftpUploader.setRealObject(realFtpUploader);
+        this.mProcessChain.add(ftpUploader);
+        
+        /* Set up FileBackuper, inject into LogProxy and push into ProcessChain*/
+        FileManipulatorLogProxy backuper = new FileManipulatorLogProxy();
+        FileBackuper realBackuper = new FileBackuper();
+        realBackuper.setPath(this.mBackupFolder);
+        backuper.setName("BACKUPER");
+        backuper.setRealObject(realBackuper);
+        this.mProcessChain.add(backuper);
+
+        /* Dynamic configuration of log setting */
         PropertyConfigurator.configure(this.mLogProperties);
     }
     
