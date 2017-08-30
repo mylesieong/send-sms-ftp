@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bcm.app.engine.SendSMSJob;
-import com.bcm.app.engine.FtpConfigProperties;
+import com.bcm.app.engine.JobConfig;
 
 @Component
 public class MainFrame extends JFrame implements ActionListener {
@@ -27,7 +27,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private SendSMSJob mJob;
 
     @Autowired
-    public FtpConfigProperties ftpConfigProperties;
+    public JobConfig jobConfig;
 
     @Autowired
     private ConfigFrame mConfigFrame;
@@ -56,7 +56,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public void initializeJob() {
         /* Init sms send job */
-        mJob.setConfig(ftpConfigProperties);
+        mJob.setConfig(jobConfig);
         mJob.init();
     }
 

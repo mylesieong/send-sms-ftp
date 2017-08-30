@@ -12,7 +12,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public FtpConfigProperties ftpConfigProperties(){
-        return new FtpConfigProperties("config.properties");
+    public JobConfig jobConfig(){
+        return new JobConfig("config.properties");
     }
 }

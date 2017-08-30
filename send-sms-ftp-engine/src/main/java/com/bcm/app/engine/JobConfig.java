@@ -11,7 +11,7 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import org.springframework.stereotype.Component;
 
-public class FtpConfigProperties {
+public class JobConfig {
 
     public final static String FTP_ADDRESS_PROPERTY = "FTP_ADDRESS";
     public final static String FTP_PORT_PROPERTY = "FTP_PORT";
@@ -28,15 +28,15 @@ public class FtpConfigProperties {
     private Properties mProperties;
     private String mPropertiesPath;
 
-    public FtpConfigProperties(String config){
+    public JobConfig(String path){
 
-        this.mPropertiesPath = config;
+        this.mPropertiesPath = path;
         this.mProperties = new Properties();
         InputStream input = null;
 
         try{
 
-            input = new FileInputStream(config);
+            input = new FileInputStream(path);
             this.mProperties.load(input);
 
         }catch (Exception e){
@@ -109,7 +109,7 @@ public class FtpConfigProperties {
 
     }
 
-    public void saveConfigProperties(){
+    public void saveConfig(){
 
         OutputStream output = null;
 

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
-import com.bcm.app.engine.FtpConfigProperties;
+import com.bcm.app.engine.JobConfig;
 
 @Component
 public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
@@ -61,7 +61,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
     /* Ftp Config */
     @Autowired
-    private FtpConfigProperties ftpConfigProperties;
+    private JobConfig jobConfig;
 
     public ConfigFrame() {
     }
@@ -205,7 +205,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
             bindFieldsToProperties();
 
-            if (ftpConfigProperties.verifyConfig()) {
+            if (jobConfig.verifyConfig()) {
                 mVerifyResultLabel.setText("Config integrity validated.");
                 mSaveConfigButton.setEnabled(true);
             }else{
@@ -217,13 +217,13 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         if (e.getSource() == this.mSaveConfigButton){
 
             /* Prompt a password verify dialog */
-            String pwd = ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY);
+            String pwd = jobConfig.getConfigEntry(JobConfig.FTP_PASSWORD_PROPERTY);
             String pwdBeta = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
             System.out.println("Verified password" + pwd + " & Input password" + pwdBeta);
 
             if (pwd.compareTo(pwdBeta) == 0){
                 /* Update mainframe properties and update the job settings */
-                this.ftpConfigProperties.saveConfigProperties();
+                this.jobConfig.saveConfig();
                 this.mCallbackFrame.initializeJob();
                 JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
             }else{
@@ -243,27 +243,27 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     }
 
     private void bindFieldsToProperties(){
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_ADDRESS_PROPERTY, this.mFtpAddressField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_PORT_PROPERTY, this.mFtpPortField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_USER_PROPERTY, this.mFtpUserField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY, this.mFtpPasswordField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_FOLDER_PROPERTY, this.mFtpFolderField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.SMS_FOLDER_PROPERTY, this.mSMSFolderField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.BACKUP_FOLDER_PROPERTY, this.mBackupFolderField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.LOOP_INTERVAL_PROPERTY, this.mLoopIntervalField.getText());
-        ftpConfigProperties.setConfigEntry(FtpConfigProperties.LOG_PROPERTIES_PROPERTY, this.mLogPropField.getText());
+        jobConfig.setConfigEntry(JobConfig.FTP_ADDRESS_PROPERTY, this.mFtpAddressField.getText());
+        jobConfig.setConfigEntry(JobConfig.FTP_PORT_PROPERTY, this.mFtpPortField.getText());
+        jobConfig.setConfigEntry(JobConfig.FTP_USER_PROPERTY, this.mFtpUserField.getText());
+        jobConfig.setConfigEntry(JobConfig.FTP_PASSWORD_PROPERTY, this.mFtpPasswordField.getText());
+        jobConfig.setConfigEntry(JobConfig.FTP_FOLDER_PROPERTY, this.mFtpFolderField.getText());
+        jobConfig.setConfigEntry(JobConfig.SMS_FOLDER_PROPERTY, this.mSMSFolderField.getText());
+        jobConfig.setConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY, this.mBackupFolderField.getText());
+        jobConfig.setConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY, this.mLoopIntervalField.getText());
+        jobConfig.setConfigEntry(JobConfig.LOG_PROPERTIES_PROPERTY, this.mLogPropField.getText());
     }
 
     private void bindPropertiesToFields(){
-        mFtpAddressField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_ADDRESS_PROPERTY));
-        mFtpPortField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PORT_PROPERTY));
-        mFtpUserField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_USER_PROPERTY));
-        mFtpPasswordField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY));
-        mFtpFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_FOLDER_PROPERTY));
-        mSMSFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.SMS_FOLDER_PROPERTY));
-        mBackupFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.BACKUP_FOLDER_PROPERTY));
-        mLoopIntervalField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.LOOP_INTERVAL_PROPERTY));
-        mLogPropField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.LOG_PROPERTIES_PROPERTY));
+        mFtpAddressField.setText(jobConfig.getConfigEntry(JobConfig.FTP_ADDRESS_PROPERTY));
+        mFtpPortField.setText(jobConfig.getConfigEntry(JobConfig.FTP_PORT_PROPERTY));
+        mFtpUserField.setText(jobConfig.getConfigEntry(JobConfig.FTP_USER_PROPERTY));
+        mFtpPasswordField.setText(jobConfig.getConfigEntry(JobConfig.FTP_PASSWORD_PROPERTY));
+        mFtpFolderField.setText(jobConfig.getConfigEntry(JobConfig.FTP_FOLDER_PROPERTY));
+        mSMSFolderField.setText(jobConfig.getConfigEntry(JobConfig.SMS_FOLDER_PROPERTY));
+        mBackupFolderField.setText(jobConfig.getConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY));
+        mLoopIntervalField.setText(jobConfig.getConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY));
+        mLogPropField.setText(jobConfig.getConfigEntry(JobConfig.LOG_PROPERTIES_PROPERTY));
     }
 
     @Override

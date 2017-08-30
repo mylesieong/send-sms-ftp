@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
-import com.bcm.app.engine.FtpConfigProperties;
+import com.bcm.app.engine.JobConfig;
 import com.bcm.app.engine.SendSMSJob;
 
 @SpringBootApplication
@@ -18,8 +18,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public FtpConfigProperties ftpConfigProperties(){
-        return new FtpConfigProperties("config.properties");
+    public JobConfig jobConfig(){
+        return new JobConfig("config.properties");
     }
 
     @Bean

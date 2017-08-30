@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class JobLauncher implements CommandLineRunner {
 
     @Autowired
-    private FtpConfigProperties ftpConfigProperties;
+    private JobConfig jobConfig;
 
     @Autowired
     private SendSMSJob sendSMSJob;
@@ -18,7 +18,7 @@ public class JobLauncher implements CommandLineRunner {
 
         System.out.println("Start the SMS Sending Job...");
         
-        sendSMSJob.setConfig(ftpConfigProperties);
+        sendSMSJob.setConfig(jobConfig);
         sendSMSJob.init();
 
         sendSMSJob.run();
