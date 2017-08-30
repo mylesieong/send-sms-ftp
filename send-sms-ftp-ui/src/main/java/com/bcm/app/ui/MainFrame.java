@@ -13,6 +13,11 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Color;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +82,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mLastSentTimeTagLabel.setBounds(26, 32, 100, 16);
         this.getContentPane().add(mLastSentTimeTagLabel);
         
-        mLastSentTimeLabel = new JLabel("[...]");
+        mLastSentTimeLabel = new JLabel();
         mLastSentTimeLabel.setBounds(136, 33, 175, 14);
         this.getContentPane().add(mLastSentTimeLabel);
         
@@ -86,15 +91,16 @@ public class MainFrame extends JFrame implements ActionListener {
         mJobStatusTagLabel.setBounds(26, 59, 100, 14);
         this.getContentPane().add(mJobStatusTagLabel);
         
-        mJobStatusLabel = new JLabel("[...]");
+        mJobStatusLabel = new JLabel();
         mJobStatusLabel.setBounds(136, 59, 175, 14);
         this.getContentPane().add(mJobStatusLabel);
         
         /* Moment status */
-        mMomentLabel = new JLabel("MOMENT");
+        mMomentLabel = new JLabel();
         mMomentLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mMomentLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
         mMomentLabel.setBounds(0, 84, 344, 48);
+        mMomentLabel.setForeground(Color.red);
         this.getContentPane().add(mMomentLabel);
         
         /* Button: Start and stop */
@@ -127,13 +133,19 @@ public class MainFrame extends JFrame implements ActionListener {
 
             Thread thread = new Thread(this.mJob);
             thread.start();
+            this.mMomentLabel.setText("WORKING");
             this.mJobStatusLabel.setText("job started.");
 
         }else if (e.getSource() == this.mStopButton){
 
             this.mJob.setActive(false);
             if (this.mJobStatusLabel.getText().compareTo("job started.") == 0 ){
+                this.mMomentLabel.setText("STOPPED");
                 this.mJobStatusLabel.setText("job ended.");
+                DateTime datetime = new DateTime();
+                DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                this.mLastSentTimeLabel.setText(datetime.toString(fmt));
+                
             }
             
         }else if (e.getSource() == this.mChangeConfigButton){
