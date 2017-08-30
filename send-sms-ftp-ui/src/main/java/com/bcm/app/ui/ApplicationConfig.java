@@ -18,7 +18,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public JobConfig jobConfig(){
+    public JobConfig mJobConfig(){
         return new JobConfig("config.properties");
     }
 

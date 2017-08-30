@@ -27,7 +27,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private SendSMSJob mJob;
 
     @Autowired
-    public JobConfig jobConfig;
+    public JobConfig mJobConfig;
 
     @Autowired
     private ConfigFrame mConfigFrame;
@@ -56,7 +56,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public void initializeJob() {
         /* Init sms send job */
-        mJob.setConfig(jobConfig);
+        mJob.setConfig(mJobConfig);
         mJob.init();
     }
 
