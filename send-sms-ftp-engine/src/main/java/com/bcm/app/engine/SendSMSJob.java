@@ -63,7 +63,7 @@ public class SendSMSJob extends Thread {
         realFtpUploader.setFtpUser(ftpUser);
         realFtpUploader.setFtpPassword(ftpPassword);
         realFtpUploader.setFtpFolder(ftpFolder);
-        ftpUploader.setName("FTPUPLOADER");
+        ftpUploader.setName("FTPUPLOAD");
         ftpUploader.setRealObject(realFtpUploader);
         this.mProcessChain.add(ftpUploader);
         
@@ -73,9 +73,16 @@ public class SendSMSJob extends Thread {
         FileManipulatorLogProxy backuper = new FileManipulatorLogProxy();
         FileBackuper realBackuper = new FileBackuper();
         realBackuper.setPath(backupFolder);
-        backuper.setName("BACKUPER");
+        backuper.setName("BACKUP");
         backuper.setRealObject(realBackuper);
         this.mProcessChain.add(backuper);
+
+        /* Set up FileRemover, inject into LogProxy and push into ProcessChain */
+        FileManipulatorLogProxy remover = new FileManipulatorLogProxy();
+        FileRemover realRemover = new FileRemover();
+        remover.setName("DELETE");
+        remover.setRealObject(realRemover);
+        this.mProcessChain.add(remover);
 
         /* Dynamic configuration of log setting */
         String logProperties = this.mConfig.getConfigEntry(JobConfig.LOG_PROPERTIES_PROPERTY);
