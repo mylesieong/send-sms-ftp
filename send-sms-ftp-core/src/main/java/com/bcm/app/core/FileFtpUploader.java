@@ -4,10 +4,8 @@ import java.io.*;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
-public class FileFtpUploader implements FileManipulator{
+public class FileFtpUploader extends FileManipulator{
     
-    private File mFile;
-    private boolean mIsSuccess = false;
     private String mFtpAddress;
     private int mFtpPort;
     private String mFtpUser;
@@ -55,18 +53,6 @@ public class FileFtpUploader implements FileManipulator{
         return this.mFtpFolder;
     }
     
-    /* --- interface override ---*/
-    @Override
-    public void setFile(File file){
-        this.mFile = file;
-        this.mIsSuccess = false;
-    };
-
-    @Override
-    public File getFile(){
-        return this.mFile;
-    };    
-    
     /**
      * Method manipulate in FileUploader will check the 
      * existence of the file set to the object
@@ -106,10 +92,5 @@ public class FileFtpUploader implements FileManipulator{
             e.printStackTrace();
         }
     }
-
-    @Override
-    public boolean isSuccess(){
-        return mIsSuccess;
-    }   
 
 }

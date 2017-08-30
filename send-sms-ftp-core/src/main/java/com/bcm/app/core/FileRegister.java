@@ -2,11 +2,9 @@ package com.bcm.app.core;
 
 import java.io.File;
 
-public class FileRegister implements FileManipulator{
+public class FileRegister extends FileManipulator{
     
-    private File mFile;
     private String mFileType;
-    private boolean mIsSuccess = false;
 
     public void setFileType(String type){
         this.mFileType = type;
@@ -15,17 +13,6 @@ public class FileRegister implements FileManipulator{
     public String getFileType(){
         return this.mFileType;
     }
-    
-    @Override
-    public void setFile(File file){
-        this.mFile = file;
-        this.mIsSuccess = false;
-    };
-
-    @Override
-    public File getFile(){
-        return this.mFile;
-    };    
     
     /**
      * Method manipulate in FileRegister will check the 
@@ -56,8 +43,4 @@ public class FileRegister implements FileManipulator{
 
     }
 
-    @Override
-    public boolean isSuccess(){
-        return mIsSuccess;
-    }   
 }

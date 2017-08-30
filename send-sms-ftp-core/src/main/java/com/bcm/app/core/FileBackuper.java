@@ -17,10 +17,8 @@ import org.apache.commons.io.FilenameUtils;
  * 
  * note: FileBackuper will not change the original file.
  */
-public class FileBackuper implements FileManipulator{
+public class FileBackuper extends FileManipulator{
     
-    private File mFile;
-    private boolean mIsSuccess = false;
     private String mPath;
     
     /* --- getters and setters ---*/
@@ -31,18 +29,6 @@ public class FileBackuper implements FileManipulator{
     public String getPath(){
         return this.mPath;
     }
-    
-    /* --- interface override ---*/
-    @Override
-    public void setFile(File file){
-        this.mFile = file;
-        this.mIsSuccess = false;
-    };
-
-    @Override
-    public File getFile(){
-        return this.mFile;
-    };    
     
     /**
      * Method manipulate in FileRegister will check the 
@@ -73,8 +59,4 @@ public class FileBackuper implements FileManipulator{
         }
     }
 
-    @Override
-    public boolean isSuccess(){
-        return mIsSuccess;
-    }   
 }

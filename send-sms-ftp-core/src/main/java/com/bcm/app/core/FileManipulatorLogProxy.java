@@ -3,7 +3,7 @@ package com.bcm.app.core;
 import org.apache.log4j.Logger;
 import java.io.File;
 
-public class FileManipulatorLogProxy implements FileManipulator{
+public class FileManipulatorLogProxy extends FileManipulator{
     
     final static String LOG_SUCCESS_TEXT = "Success on manipulate *";
     final static String LOG_FAILURE_TEXT = "Failure on manipulate *";
