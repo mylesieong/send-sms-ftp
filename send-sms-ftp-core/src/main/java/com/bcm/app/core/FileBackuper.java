@@ -61,11 +61,10 @@ public class FileBackuper implements FileManipulator{
                 
                 File backupFile = new File(this.getPath() + "\\" + fileName + datetime.toString(fmt) + "." + fileExtension);
                 backupFile.createNewFile();
-                
                 FileUtils.copyFile(this.getFile(), backupFile);
-                FileUtils.forceDelete(this.getFile());
                 
                 this.mIsSuccess = true;
+                
             }else{
                 this.mIsSuccess = false;
             }
