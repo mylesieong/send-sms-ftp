@@ -25,150 +25,54 @@ public class FtpConfigProperties {
     public final static String LOG_PROPERTIES_PROPERTY = "LOG_PROP";
     public final static String NA_VALUE = "N/A";
 
-    private String mConfigPath;
-
-    private String mFtpAddress;
-    private String mFtpPort;
-    private String mFtpUser;
-    private String mFtpPassword;
-    private String mFtpFolder;
-    private String mSMSFolder;
-    private String mBackupFolder;
-    private String mLoopInterval;
-    private String mFileType;
-    private String mLogProperties;
+    private Properties mProperties;
+    private String mPropertiesPath;
 
     public FtpConfigProperties(String config){
 
-        this.mConfigPath = config;
-        this.loadConfigProperties();
-
-    }
-
-    public void loadConfigProperties(){
-
-        Properties prop = new Properties();
+        this.mPropertiesPath = config;
+        this.mProperties = new Properties();
         InputStream input = null;
 
         try{
 
-            input = new FileInputStream(this.mConfigPath);
-            prop.load(input);
-            this.mFtpAddress = prop.getProperty(FTP_ADDRESS_PROPERTY);
-            this.mFtpPort = prop.getProperty(FTP_PORT_PROPERTY);
-            this.mFtpUser = prop.getProperty(FTP_USER_PROPERTY);
-            this.mFtpPassword = prop.getProperty(FTP_PASSWORD_PROPERTY);
-            this.mFtpFolder = prop.getProperty(FTP_FOLDER_PROPERTY);
-            this.mSMSFolder = prop.getProperty(SMS_FOLDER_PROPERTY);
-            this.mBackupFolder = prop.getProperty(BACKUP_FOLDER_PROPERTY);
-            this.mLoopInterval = prop.getProperty(LOOP_INTERVAL_PROPERTY);
-            this.mFileType = prop.getProperty(FILE_TYPE_PROPERTY);
-            this.mLogProperties = prop.getProperty(LOG_PROPERTIES_PROPERTY);
+            input = new FileInputStream(config);
+            this.mProperties.load(input);
 
         }catch (Exception e){
 
             e.printStackTrace();
-            this.mFtpAddress = NA_VALUE;
-            this.mFtpPort = NA_VALUE;
-            this.mFtpUser = NA_VALUE;
-            this.mFtpPassword = NA_VALUE;
-            this.mFtpFolder = NA_VALUE;
-            this.mSMSFolder = NA_VALUE;
-            this.mBackupFolder = NA_VALUE;
-            this.mLoopInterval = NA_VALUE;
-            this.mFileType = NA_VALUE;
-            this.mLogProperties = NA_VALUE;
-
         }
 
     }
 
-    /* Setters */
-    public void setFtpAddress(String address){
-        this.mFtpAddress = address;
-    }
-    
-    public void setFtpPort(String port){
-        this.mFtpPort = port;
+    public String getConfigEntry(String key){
+        return this.mProperties.getProperty(key, NA_VALUE);
+    } 
+
+    public void setConfigEntry(String key, String value){
+        this.mProperties.setProperty(key, value);
+    } 
+
+    public boolean verifyConfig(){
+        
+        boolean valid = this.verifyFtpConnection();
+        return valid;
+
     }
 
-    public void setFtpUser(String user){
-        this.mFtpUser = user;
-    }
-    
-    public void setFtpPassword(String password){
-        this.mFtpPassword = password;
-    }
-    
-    public void setFtpFolder(String folder){
-        this.mFtpFolder = folder;
-    }
-    
-    public void setSMSFolder(String folder){
-        this.mSMSFolder = folder;
-    }
-    
-    public void setBackupFolder(String folder){
-        this.mBackupFolder = folder;
-    }
-    
-    public void setLoopInterval(String interval){
-        this.mLoopInterval = interval;
-    }
-    
-    public void setFileType(String type){
-        this.mFileType = type;
-    }
+    private boolean verifyFtpConnection(){
 
-    public void setLogProperties(String prop){
-        this.mLogProperties = prop;
-    }
+        String ftpAddress = this.getConfigEntry(FTP_ADDRESS_PROPERTY);
+        int ftpPort = Integer.parseInt(this.getConfigEntry(FTP_PORT_PROPERTY));
+        String ftpUser = this.getConfigEntry(FTP_USER_PROPERTY);
+        String ftpPassword = this.getConfigEntry(FTP_PASSWORD_PROPERTY);
+        String ftpFolder = this.getConfigEntry(FTP_FOLDER_PROPERTY);
 
-    /* Getters */
-    public String getFtpAddress(){
-        return this.mFtpAddress;
-    }
-
-    public String getFtpPort(){
-        return this.mFtpPort;
-    }
-
-    public String getFtpUser(){
-        return this.mFtpUser;
-    }
-
-    public String getFtpPassword(){
-        return this.mFtpPassword;
-    }
-
-    public String getFtpFolder(){
-        return this.mFtpFolder;
-    }
-
-    public String getSMSFolder(){
-        return this.mSMSFolder;
-    }
-
-    public String getBackupFolder(){
-        return this.mBackupFolder;
-    }
-
-    public String getLoopInterval(){
-        return this.mLoopInterval;
-    }
-
-    public String getFileType(){
-        return this.mFileType;
-    }
-
-    public String getLogProperties(){
-        return this.mLogProperties;
-    }
-
-    public boolean verifyFtpConnection(){
         try{
+
             FTPClient ftpClient = new FTPClient();
-            ftpClient.connect(this.getFtpAddress(), Integer.parseInt(this.getFtpPort()));
+            ftpClient.connect(ftpAddress, ftpPort);
 
             /* Check ftp address and port */
             int replyCode = ftpClient.getReplyCode();
@@ -178,14 +82,14 @@ public class FtpConfigProperties {
             }
 
             /* Check user and password */
-            boolean success = ftpClient.login(this.getFtpUser(), this.getFtpPassword());
+            boolean success = ftpClient.login(ftpUser, ftpPassword);
             if (!success){            
                 System.out.println("Wrong ftp settings, test skiped.");
                 return false;
             }
 
             /* Check upload target ftp folder existence */
-            ftpClient.changeWorkingDirectory(this.getFtpFolder());
+            ftpClient.changeWorkingDirectory(ftpFolder);
             if (!FTPReply.isPositiveCompletion(replyCode)){
                 System.out.println("Cannot find target ftp folder, test skipped. ");
                 return false;
@@ -197,37 +101,26 @@ public class FtpConfigProperties {
             return true;
 
         }catch (Exception e){
+
             e.printStackTrace();
             return false;
+
         }
+
     }
 
     public void saveConfigProperties(){
-        Properties prop = new Properties();
+
         OutputStream output = null;
 
         try {
 
-            output = new FileOutputStream(this.mConfigPath);
-            prop.setProperty(FTP_ADDRESS_PROPERTY, this.mFtpAddress);
-            prop.setProperty(FTP_PORT_PROPERTY, this.mFtpPort);
-            prop.setProperty(FTP_USER_PROPERTY, this.mFtpUser);
-            prop.setProperty(FTP_PASSWORD_PROPERTY, this.mFtpPassword);
-            prop.setProperty(FTP_FOLDER_PROPERTY, this.mFtpFolder);
-            prop.setProperty(SMS_FOLDER_PROPERTY, this.mSMSFolder);
-            prop.setProperty(BACKUP_FOLDER_PROPERTY, this.mBackupFolder);
-            prop.setProperty(LOOP_INTERVAL_PROPERTY, this.mLoopInterval);
-            prop.setProperty(FILE_TYPE_PROPERTY, this.mFileType);
-            prop.setProperty(LOG_PROPERTIES_PROPERTY, this.mLogProperties);
-            prop.store(output, null);
+            output = new FileOutputStream(this.mPropertiesPath);
+            this.mProperties.store(output, null);
 
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    public void refreshConfigProperties(){
-        this.loadConfigProperties();
     }
 
 }
