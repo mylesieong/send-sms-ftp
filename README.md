@@ -69,28 +69,26 @@ For package engine, here lists some demo cases and suggested solutions:
 
 * If back up strategy changes from storing at local file system to remote ftp server:
     - add new backup ftp related info to config.properties
-    - change package<engine>:FtpConfigProperties.java that reads newly added properties
-    - update package<engine>:SendSMSJob.java, replace MessageBackuper with MessageFtpUploader(inject new properties)
-    - that's it, rebuild the project!
+    - update package<engine>:SendSMSJob.java, replace MessageBackuper with MessageFtpUploader(grab props from jobConfig)
+    - rebuild the project!
 
 * If the input source change from local file folder to remote ftp server:
     - add new ftp related info to config.properties
-    - change package<engine>:FtpConfigProperties.java that reads newly added properties
     - update package<engine>:SendSMSJob.java the way that it feeds data to FileManipulators
-    - that's it, rebuild the project!
+    - rebuild the project!
 
 * If we need to add an convertor for messages before they are sent:
     - create new implementee of interface FileManipulator named MessageConvertor
     - update package<engine>:SendSMSJob.java push MessageConvertor into SendSMSJob's process chain
-    - that's it, rebuild the project!
+    - rebuild the project!
 
 * If messages should be process by priority according to a newly introduced algorithm:
     - update package<engine>:SendSMSJob.java the way that it feeds data to FileManipulators
-    - that's it, rebuild the project!
+    - rebuild the project!
 
 * If messages processing changes from ftp uploading to web-service posting:
     - create new implementee of interface FileManipulator named MessageWebPoster
-    - update package<engine>:SendSMSJob.java, replace MessageFtpUploader with MessageWebPoster(inject new properties)
-    - that's it, rebuild the project!
+    - update package<engine>:SendSMSJob.java, replace MessageFtpUploader with MessageWebPoster(grab props from jobConfig)
+    - rebuild the project!
     
 For package ui, mostly add/remove gui components for new changes, few logic changes involve.
