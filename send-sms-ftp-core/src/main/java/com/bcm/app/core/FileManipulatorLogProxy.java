@@ -5,7 +5,6 @@ import java.io.File;
 
 public class FileManipulatorLogProxy implements FileManipulator{
     
-    final static String LOG_BEGINNING_TEXT = "Perform manipulate *";
     final static String LOG_SUCCESS_TEXT = "Success on manipulate *";
     final static String LOG_FAILURE_TEXT = "Failure on manipulate *";
     final static String LOG_NO_REAL_OBJECT_TEXT = "No real object on manipulate *";
@@ -41,14 +40,12 @@ public class FileManipulatorLogProxy implements FileManipulator{
 
         String filename = this.mReal.getFile().getName();
 
-        mLogger.debug(LOG_BEGINNING_TEXT + this.mName + " [" + filename + "]");
-
         this.mReal.manipulate();
 
         if (this.mReal.isSuccess()){
-            mLogger.debug(LOG_SUCCESS_TEXT + this.mName + " [" + filename + "]");
+            mLogger.info(LOG_SUCCESS_TEXT + this.mName + " [" + filename + "]");
         }else{
-            mLogger.debug(LOG_FAILURE_TEXT + this.mName + " [" + filename + "]");
+            mLogger.info(LOG_FAILURE_TEXT + this.mName + " [" + filename + "]");
         }
 
     }
