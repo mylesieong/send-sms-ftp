@@ -56,16 +56,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public void initializeJob() {
         /* Init sms send job */
-        mJob.setFtpAddress(ftpConfigProperties.getFtpAddress());
-        mJob.setFtpPort(Integer.parseInt(ftpConfigProperties.getFtpPort()));
-        mJob.setFtpUser(ftpConfigProperties.getFtpUser());
-        mJob.setFtpPassword(ftpConfigProperties.getFtpPassword());
-        mJob.setFtpFolder(ftpConfigProperties.getFtpFolder());
-        mJob.setSMSFolder(ftpConfigProperties.getSMSFolder());
-        mJob.setBackupFolder(ftpConfigProperties.getBackupFolder());
-        mJob.setLoopInterval(Integer.parseInt(ftpConfigProperties.getLoopInterval()));
-        mJob.setFileType(ftpConfigProperties.getFileType());
-        mJob.setLogProperties(ftpConfigProperties.getLogProperties());
+        mJob.setConfig(ftpConfigProperties);
         mJob.init();
     }
 
