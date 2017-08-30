@@ -20,17 +20,15 @@ public class SendSMSJob extends Thread {
 
     private boolean mIsActive;
     private List<FileManipulator> mProcessChain;
-    
-    private String mFtpAddress;
-    private int mFtpPort;
-    private String mFtpUser;
-    private String mFtpPassword;
-    private String mFtpFolder;
-    private String mSMSFolder;
-    private String mBackupFolder;
-    private int mLoopInterval;
-    private String mFileType;
-    private String mLogProperties;   
+    private FtpConfigProperties mConfig;
+
+    public void setConfig(FtpConfigProperties config){
+        this.mConfig = config;
+    }
+
+    public FtpConfigProperties getConfig(){
+        return this.mConfig;
+    }
 
     public SendSMSJob(){
         super();
@@ -41,77 +39,47 @@ public class SendSMSJob extends Thread {
 
         this.mProcessChain = new ArrayList<FileManipulator>();
 
-        /* Set up FileRegister, inject into LogProxy and push into ProcessChain*/
+        /* Set up FileRegister, inject into LogProxy and push into ProcessChain */
+        String fileType = this.mConfig.getConfigEntry(FtpConfigProperties.FILE_TYPE_PROPERTY);
+
         FileManipulatorLogProxy register = new FileManipulatorLogProxy();
         FileRegister realRegister = new FileRegister(); 
-        realRegister.setFileType(this.mFileType);
+        realRegister.setFileType(fileType);
         register.setName("REGISTER");
         register.setRealObject(realRegister);
         this.mProcessChain.add(register);
         
-        /* Set up FileFtpUploader, inject into LogProxy and push into ProcessChain*/
+        /* Set up FileFtpUploader, inject into LogProxy and push into ProcessChain */
+        String ftpAddress = this.mConfig.getConfigEntry(FtpConfigProperties.FTP_ADDRESS_PROPERTY);
+        int ftpPort = Integer.parseInt(this.mConfig.getConfigEntry(FtpConfigProperties.FTP_PORT_PROPERTY));
+        String ftpUser = this.mConfig.getConfigEntry(FtpConfigProperties.FTP_USER_PROPERTY);
+        String ftpPassword = this.mConfig.getConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY);
+        String ftpFolder = this.mConfig.getConfigEntry(FtpConfigProperties.FTP_FOLDER_PROPERTY);
+
         FileManipulatorLogProxy ftpUploader = new FileManipulatorLogProxy();
         FileFtpUploader realFtpUploader = new FileFtpUploader();
-        realFtpUploader.setFtpAddress(this.mFtpAddress);
-        realFtpUploader.setFtpPort(this.mFtpPort);
-        realFtpUploader.setFtpUser(this.mFtpUser);
-        realFtpUploader.setFtpPassword(this.mFtpPassword);
-        realFtpUploader.setFtpFolder(this.mFtpFolder);
+        realFtpUploader.setFtpAddress(ftpAddress);
+        realFtpUploader.setFtpPort(ftpPort);
+        realFtpUploader.setFtpUser(ftpUser);
+        realFtpUploader.setFtpPassword(ftpPassword);
+        realFtpUploader.setFtpFolder(ftpFolder);
         ftpUploader.setName("FTPUPLOADER");
         ftpUploader.setRealObject(realFtpUploader);
         this.mProcessChain.add(ftpUploader);
         
-        /* Set up FileBackuper, inject into LogProxy and push into ProcessChain*/
+        /* Set up FileBackuper, inject into LogProxy and push into ProcessChain */
+        String backupFolder = this.mConfig.getConfigEntry(FtpConfigProperties.BACKUP_FOLDER_PROPERTY);
+
         FileManipulatorLogProxy backuper = new FileManipulatorLogProxy();
         FileBackuper realBackuper = new FileBackuper();
-        realBackuper.setPath(this.mBackupFolder);
+        realBackuper.setPath(backupFolder);
         backuper.setName("BACKUPER");
         backuper.setRealObject(realBackuper);
         this.mProcessChain.add(backuper);
 
         /* Dynamic configuration of log setting */
-        PropertyConfigurator.configure(this.mLogProperties);
-    }
-    
-    /* Setters */
-    public void setFtpAddress(String address){
-        this.mFtpAddress = address;
-    }
-    
-    public void setFtpPort(int port){
-        this.mFtpPort = port;
-    }
-    
-    public void setFtpUser(String user){
-        this.mFtpUser = user;
-    }
-    
-    public void setFtpPassword(String password){
-        this.mFtpPassword = password;
-    }
-    
-    public void setFtpFolder(String folder){
-        this.mFtpFolder = folder;
-    }
-    
-    public void setSMSFolder(String folder){
-        this.mSMSFolder = folder;
-    }
-    
-    public void setBackupFolder(String folder){
-        this.mBackupFolder = folder;
-    }
-    
-    public void setLoopInterval(int interval){
-        this.mLoopInterval = interval;
-    }
-    
-    public void setFileType(String type){
-        this.mFileType = type;
-    }
-    
-    public void setLogProperties(String path){
-        this.mLogProperties = path;
+        String logProperties = this.mConfig.getConfigEntry(FtpConfigProperties.LOG_PROPERTIES_PROPERTY);
+        PropertyConfigurator.configure(logProperties);
     }
     
     /* Status setter and getter */
@@ -126,11 +94,15 @@ public class SendSMSJob extends Thread {
     @Override
     public void run(){
         mLogger.debug("Job Starts.");
+
+        int interval = Integer.parseInt(this.mConfig.getConfigEntry(FtpConfigProperties.LOOP_INTERVAL_PROPERTY));
+        String smsFolder = this.mConfig.getConfigEntry(FtpConfigProperties.SMS_FOLDER_PROPERTY);
         this.mIsActive = true;
+
         while(this.isActive()) {
             try {
                 //File operations
-                File targetFoler = new File(this.mSMSFolder);
+                File targetFoler = new File(smsFolder);
                 if (targetFoler.exists() && targetFoler.isDirectory()){
                     for (File f : targetFoler.listFiles()){
                         // System.out.println("Found file(s):" + f);
@@ -145,8 +117,8 @@ public class SendSMSJob extends Thread {
                     }
                 }
                 
-                // 暫停目前的執行緒5秒
-                Thread.sleep(this.mLoopInterval);
+                //Set thread to sleep for an interval(ms)
+                Thread.sleep(interval);
                 mLogger.debug("Job loops.");
                 
             } catch(InterruptedException e) {

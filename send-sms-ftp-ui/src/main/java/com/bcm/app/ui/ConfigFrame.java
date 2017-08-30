@@ -205,7 +205,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
             bindFieldsToProperties();
 
-            if (ftpConfigProperties.verifyFtpConnection()) {
+            if (ftpConfigProperties.verifyConfig()) {
                 mVerifyResultLabel.setText("Config integrity validated.");
                 mSaveConfigButton.setEnabled(true);
             }else{
@@ -217,14 +217,13 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         if (e.getSource() == this.mSaveConfigButton){
 
             /* Prompt a password verify dialog */
-            String pwd = ftpConfigProperties.getFtpPassword();
+            String pwd = ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY);
             String pwdBeta = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
             System.out.println("Verified password" + pwd + " & Input password" + pwdBeta);
 
             if (pwd.compareTo(pwdBeta) == 0){
                 /* Update mainframe properties and update the job settings */
                 this.ftpConfigProperties.saveConfigProperties();
-                this.mCallbackFrame.ftpConfigProperties.refreshConfigProperties();
                 this.mCallbackFrame.initializeJob();
                 JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
             }else{
@@ -236,7 +235,6 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         if (e.getSource() == this.mCancelButton){
 
             /* Reload properties before change */
-            this.ftpConfigProperties.refreshConfigProperties();
             bindPropertiesToFields();
             this.setVisible(false);
 
@@ -245,27 +243,27 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     }
 
     private void bindFieldsToProperties(){
-        ftpConfigProperties.setFtpAddress(this.mFtpAddressField.getText());
-        ftpConfigProperties.setFtpPort(this.mFtpPortField.getText());
-        ftpConfigProperties.setFtpUser(this.mFtpUserField.getText());
-        ftpConfigProperties.setFtpPassword(this.mFtpPasswordField.getText());
-        ftpConfigProperties.setFtpFolder(this.mFtpFolderField.getText());
-        ftpConfigProperties.setSMSFolder(this.mSMSFolderField.getText());
-        ftpConfigProperties.setBackupFolder(this.mBackupFolderField.getText());
-        ftpConfigProperties.setLoopInterval(this.mLoopIntervalField.getText());
-        ftpConfigProperties.setLogProperties(this.mLogPropField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_ADDRESS_PROPERTY, this.mFtpAddressField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_PORT_PROPERTY, this.mFtpPortField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_USER_PROPERTY, this.mFtpUserField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY, this.mFtpPasswordField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.FTP_FOLDER_PROPERTY, this.mFtpFolderField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.SMS_FOLDER_PROPERTY, this.mSMSFolderField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.BACKUP_FOLDER_PROPERTY, this.mBackupFolderField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.LOOP_INTERVAL_PROPERTY, this.mLoopIntervalField.getText());
+        ftpConfigProperties.setConfigEntry(FtpConfigProperties.LOG_PROPERTIES_PROPERTY, this.mLogPropField.getText());
     }
 
     private void bindPropertiesToFields(){
-        mFtpAddressField.setText(ftpConfigProperties.getFtpAddress());
-        mFtpPortField.setText(ftpConfigProperties.getFtpPort());
-        mFtpUserField.setText(ftpConfigProperties.getFtpUser());
-        mFtpPasswordField.setText(ftpConfigProperties.getFtpPassword());
-        mFtpFolderField.setText(ftpConfigProperties.getFtpFolder());
-        mSMSFolderField.setText(ftpConfigProperties.getSMSFolder());
-        mBackupFolderField.setText(ftpConfigProperties.getBackupFolder());
-        mLoopIntervalField.setText(ftpConfigProperties.getLoopInterval());
-        mLogPropField.setText(ftpConfigProperties.getLogProperties());
+        mFtpAddressField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_ADDRESS_PROPERTY));
+        mFtpPortField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PORT_PROPERTY));
+        mFtpUserField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_USER_PROPERTY));
+        mFtpPasswordField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_PASSWORD_PROPERTY));
+        mFtpFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.FTP_FOLDER_PROPERTY));
+        mSMSFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.SMS_FOLDER_PROPERTY));
+        mBackupFolderField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.BACKUP_FOLDER_PROPERTY));
+        mLoopIntervalField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.LOOP_INTERVAL_PROPERTY));
+        mLogPropField.setText(ftpConfigProperties.getConfigEntry(FtpConfigProperties.LOG_PROPERTIES_PROPERTY));
     }
 
     @Override
