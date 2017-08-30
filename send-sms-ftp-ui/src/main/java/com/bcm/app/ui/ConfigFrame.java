@@ -50,6 +50,9 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     private JLabel mLogPropTagLabel;
     private JTextField mLogPropField;
 
+    private JLabel mFileTypeTagLabel;
+    private JTextField mFileTypeField;
+
     private JLabel mVerifyResultLabel;
     
     private MainFrame mCallbackFrame;
@@ -67,7 +70,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     }
 
     private void initializeComponent(){
-        this.setBounds(100, 100, 360, 360);
+        this.setBounds(100, 100, 360, 385);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.getContentPane().setLayout(null);
         
@@ -161,28 +164,38 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mLogPropField.addKeyListener(this);
         this.getContentPane().add(mLogPropField);
 
+        /* File type */
+        mFileTypeTagLabel = new JLabel("File Type: ");
+        mFileTypeTagLabel.setBounds(26, 250, 100, 16);
+        this.getContentPane().add(mFileTypeTagLabel);
+        
+        mFileTypeField = new JTextField();
+        mFileTypeField.setBounds(136, 250, 175, 16);
+        mFileTypeField.addKeyListener(this);
+        this.getContentPane().add(mFileTypeField);
+
         /* Button: verify */
         mVerifyConfigButton = new JButton("Verify");
-        mVerifyConfigButton.setBounds(26, 260, 80, 35);
+        mVerifyConfigButton.setBounds(26, 285, 80, 35);
         mVerifyConfigButton.addActionListener(this);
         this.getContentPane().add(mVerifyConfigButton);
         
         /* Button: Save */
         mSaveConfigButton = new JButton("Save");
-        mSaveConfigButton.setBounds(116, 260, 80, 35);
+        mSaveConfigButton.setBounds(116, 285, 80, 35);
         mSaveConfigButton.addActionListener(this);
         mSaveConfigButton.setEnabled(false);
         this.getContentPane().add(mSaveConfigButton);
 
         /* Button: Cancel1 */
         mCancelButton = new JButton("Cancel");
-        mCancelButton.setBounds(206, 260, 80, 35);
+        mCancelButton.setBounds(206, 285, 80, 35);
         mCancelButton.addActionListener(this);
         this.getContentPane().add(mCancelButton);
 
         /* Verify Result Label */
         mVerifyResultLabel = new JLabel();
-        mVerifyResultLabel.setBounds(26, 300, 275, 16);
+        mVerifyResultLabel.setBounds(26, 325, 275, 16);
         this.getContentPane().add(mVerifyResultLabel);
     }
 
@@ -252,6 +265,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         jobConfig.setConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY, this.mBackupFolderField.getText());
         jobConfig.setConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY, this.mLoopIntervalField.getText());
         jobConfig.setConfigEntry(JobConfig.LOG_PROPERTIES_PROPERTY, this.mLogPropField.getText());
+        jobConfig.setConfigEntry(JobConfig.FILE_TYPE_PROPERTY, this.mFileTypeField.getText());
     }
 
     private void bindPropertiesToFields(){
@@ -264,6 +278,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mBackupFolderField.setText(jobConfig.getConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY));
         mLoopIntervalField.setText(jobConfig.getConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY));
         mLogPropField.setText(jobConfig.getConfigEntry(JobConfig.LOG_PROPERTIES_PROPERTY));
+        mFileTypeField.setText(jobConfig.getConfigEntry(JobConfig.FILE_TYPE_PROPERTY));
     }
 
     @Override
