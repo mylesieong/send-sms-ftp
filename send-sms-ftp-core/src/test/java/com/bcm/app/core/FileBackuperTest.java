@@ -185,13 +185,4 @@ public class FileBackuperTest{
          }
      }
      
-     // @Test
-     // public void testNonExistingFile(){
-         
-     // }
-     
-     // @Test 
-     // public void testNonExistingPath(){
-         
-     // }
 }

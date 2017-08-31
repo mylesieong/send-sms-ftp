@@ -2,21 +2,38 @@ package com.bcm.app.core;
 
 import java.io.File;
 
+/**
+ * Class FileRegister checks the file type and the existence 
+ * of target file.
+ *
+ */
 public class FileRegister extends FileManipulator{
     
+    /*
+     * File type for checking
+     */
     private String mFileType;
 
+    /**
+     * Setter of member mFileType
+     *
+     * @param String filetype e.g. "msg", "txt"
+     */
     public void setFileType(String type){
         this.mFileType = type;
     }
 
+    /**
+     * Getter of member mFileType
+     */
     public String getFileType(){
         return this.mFileType;
     }
     
     /**
-     * Method manipulate in FileRegister will check the 
+     * Method manipulate checks the 
      * existence of the file set to the object
+     *
      */
     @Override
     public void manipulate(){
@@ -27,17 +44,18 @@ public class FileRegister extends FileManipulator{
 
         }else{
 
-            boolean fileExist;
-            boolean fileFiltered = false;
+            boolean fileExist = false;
+            boolean fileTypeOK = false;
 
             fileExist = this.mFile.exists();
-            
+
             if (fileExist){
-                String type = this.mFile.getName().substring(this.mFile.getName().lastIndexOf(".") + 1);
-                fileFiltered = type.compareToIgnoreCase(this.mFileType) != 0;
+                int index = this.mFile.getName().lastIndexOf(".") + 1;
+                String type = this.mFile.getName().substring(index);
+                fileTypeOK = type.compareToIgnoreCase(this.mFileType) == 0;
             }
 
-            this.mIsSuccess = fileExist && !fileFiltered;
+            this.mIsSuccess = fileExist && fileTypeOK;
 
         }
 

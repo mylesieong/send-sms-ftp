@@ -62,6 +62,11 @@ public class FileManipulatorLogProxy extends FileManipulator{
         return this.mReal;
     }
 
+    /**
+     * Method manipulate() uses real object to performs operation. 
+     * After the operation is performed, write result to the log.
+     *
+     */
     @Override
     public void manipulate(){
 
@@ -83,16 +88,35 @@ public class FileManipulatorLogProxy extends FileManipulator{
 
     }
 
+    /**
+     * Method setFile(File) overrides FileManipulator:setFile(File)
+     * that it uses real object to perfroms the operation.
+     *
+     * @param File target file
+     * @return void
+     */
     @Override
     public void setFile(File f){
         this.mReal.setFile(f);
     }
 
+    /**
+     * Method getFile() overrides FileManipulator:getFile()
+     * that it uses real object to perfroms the operation.
+     *
+     * @return File target file
+     */
     @Override 
     public File getFile(){
         return this.mReal.getFile();
     }
 
+    /**
+     * Method isSuccess() overrides FileManipulator:isSuccess()
+     * that it uses real object to perfroms the operation.
+     *
+     * @return boolean result of operation 
+     */
     @Override
     public boolean isSuccess(){
         return this.mReal.isSuccess();

@@ -22,7 +22,9 @@ import com.bcm.app.engine.JobConfig;
 @Component
 public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
-    /* Load Config Frame properties */
+    /* 
+     * Config Frame screen members 
+     */
     private JLabel mFtpAddressTagLabel;
     private JTextField mFtpAddressField;
     
@@ -55,14 +57,21 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
     private JLabel mVerifyResultLabel;
     
+    /*
+     * Callback of mainframe
+     */
     private MainFrame mCallbackFrame;
 
-    /* Buttons */
+    /*
+     * Config Frame Button members
+     */
     public JButton mVerifyConfigButton;
     public JButton mSaveConfigButton;
     public JButton mCancelButton;
 
-    /* Ftp Config */
+    /* 
+     * JobConfig member 
+     */
     @Autowired
     private JobConfig jobConfig;
 

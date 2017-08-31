@@ -116,7 +116,7 @@ public class FileFtpUploader extends FileManipulator{
             // Check whether login success, if not then stop action
             boolean success = ftpClient.login(this.getFtpUser(), this.getFtpPassword());
             if (!success){            
-                System.out.println("Wrong ftp settings, test skiped.");
+                System.out.println("Wrong ftp settings, operation quited.");
                 this.mIsSuccess = false;
                 return ;
             }
@@ -124,7 +124,7 @@ public class FileFtpUploader extends FileManipulator{
             // Check whether target upload folder on ftp exists
             ftpClient.changeWorkingDirectory(this.getFtpFolder());
             if (!FTPReply.isPositiveCompletion(replyCode)){
-                System.out.println("Cannot find target ftp folder, test skipped. ");
+                System.out.println("Cannot find target ftp folder, operation quited. ");
                 this.mIsSuccess = false;
                 return ; 
             }
@@ -134,14 +134,12 @@ public class FileFtpUploader extends FileManipulator{
             ftpClient.appendFile(this.getFile().getName(), input);
             this.mIsSuccess = true;
 
-            // Clean action left over
-            input.close();
-            ftpClient.logout();
-            ftpClient.disconnect();
-
         }catch (Exception e){
+
             e.printStackTrace();
+
         }finally{
+
             // Close io stream
             if (input != null){
                 try{
@@ -150,14 +148,17 @@ public class FileFtpUploader extends FileManipulator{
                     ee.printStackTrace();
                 }
             }
+
             // Close ftpclient
             if (ftpClient.isConnected()){
                 try{
+                    ftpClient.logout();
                     ftpClient.disconnect();
                 }catch(Exception ee){
                     ee.printStackTrace();
                 }
             }
+
         }
 
     }
