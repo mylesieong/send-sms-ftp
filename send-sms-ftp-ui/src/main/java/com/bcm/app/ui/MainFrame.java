@@ -156,7 +156,9 @@ public class MainFrame extends JFrame implements ActionListener {
             public void run(){
                 try{
                     while (true){
+
                         if (MainFrame.this.mJob.isActive()){
+
                             //Update last sent time 
                             DateTime last = MainFrame.this.mJob.getLastSentDateTime();
                             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
@@ -166,13 +168,18 @@ public class MainFrame extends JFrame implements ActionListener {
 
                             //Update moment
                             if (MainFrame.this.mJob.didIJustSentSomething()){
+                                MainFrame.this.mMomentLabel.setForeground(Color.green);
                                 MainFrame.this.mMomentLabel.setText("Sending...");
                                 MainFrame.this.mJob.turnOffJustSentSomethingFlag();
                             }else{
+                                MainFrame.this.mMomentLabel.setForeground(Color.red);
                                 MainFrame.this.mMomentLabel.setText("Waiting SMS");
                             }
+
                         }
+
                         Thread.sleep(1000);
+
                     }
                 }catch(Exception e){
                     e.printStackTrace();

@@ -313,6 +313,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
                 this.jobConfig.saveConfig();
                 this.mCallbackFrame.refreshJob();
                 JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
+                this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(this, "Wrong password!", "Result", JOptionPane.ERROR_MESSAGE);
             }
