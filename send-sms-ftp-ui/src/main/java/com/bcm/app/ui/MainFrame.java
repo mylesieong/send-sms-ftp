@@ -25,19 +25,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bcm.app.engine.SendSMSJob;
 import com.bcm.app.engine.JobConfig;
 
+/**
+ * Class MainFrame is the main Graphic User Interface. It provides
+ * buttons for user to control the SendSMSJob (Start/ Stop/ Change
+ * Config)
+ *
+ */
 @Component
 public class MainFrame extends JFrame implements ActionListener {
 
+    /*
+     * Bean get/autowire from the pool
+     */
     @Autowired
     private SendSMSJob mJob;
 
+    /*
+     * Bean get/autowire from the pool
+     */
     @Autowired
     public JobConfig mJobConfig;
 
+    /*
+     * Bean get/autowire from the pool
+     */
     @Autowired
     private ConfigFrame mConfigFrame;
     
-    /* Main Frame properties */
+    /* 
+     * Main Frame properties 
+     */
     private JLabel mLastSentTimeTagLabel;
     private JLabel mLastSentTimeLabel;
     private JLabel mJobStatusTagLabel;
@@ -47,11 +64,10 @@ public class MainFrame extends JFrame implements ActionListener {
     private JButton mStopButton;
     private JButton mChangeConfigButton;
     
-    public MainFrame() {
-    }
-
     /**
-     * Init this
+     * Method initialize() initialize MainFrame, its components and 
+     * the SendSMSJob member.
+     *
      */
     public void initialize() {
         initializeJob();
@@ -59,25 +75,36 @@ public class MainFrame extends JFrame implements ActionListener {
         initializeMainFrame();
     }
 
-    public void initializeJob() {
-        /* Init sms send job */
+    /**
+     * [Private] Initialize SendSMSJob member
+     *
+     */
+    private void initializeJob() {
         mJob.setConfig(mJobConfig);
         mJob.init();
     }
 
-    public void initializeConfigFrame() {
-        /* init config Frame*/
+    /**
+     * [Private] Initialize JComponents on ConfigFrame 
+     *
+     */
+    private void initializeConfigFrame() {
         mConfigFrame.initialize();
         mConfigFrame.setCallbackFrame(this);
     }
 
-    public void initializeMainFrame() {
+    /**
+     * [Private] Initialize JComponents on MainFrame 
+     *
+     */
+    private void initializeMainFrame() {
 
+        // Main Frame basic 
         this.setBounds(100, 100, 360, 320);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(null);
         
-        /*Last sent time */
+        //Last sent time 
         mLastSentTimeTagLabel = new JLabel("Last Sent Time: ");
         mLastSentTimeTagLabel.setBounds(26, 32, 100, 16);
         this.getContentPane().add(mLastSentTimeTagLabel);
@@ -86,7 +113,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mLastSentTimeLabel.setBounds(136, 33, 175, 14);
         this.getContentPane().add(mLastSentTimeLabel);
         
-        /* Job status */
+        // Job status 
         mJobStatusTagLabel = new JLabel("Job Status: ");
         mJobStatusTagLabel.setBounds(26, 59, 100, 14);
         this.getContentPane().add(mJobStatusTagLabel);
@@ -95,7 +122,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mJobStatusLabel.setBounds(136, 59, 175, 14);
         this.getContentPane().add(mJobStatusLabel);
         
-        /* Moment status */
+        // Moment status 
         mMomentLabel = new JLabel();
         mMomentLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mMomentLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -103,7 +130,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mMomentLabel.setForeground(Color.red);
         this.getContentPane().add(mMomentLabel);
         
-        /* Button: Start and stop */
+        // Button: Start and stop 
         mStartButton = new JButton("Start Send SMS");
         mStartButton.setBounds(26, 154, 300, 25);
         mStartButton.addActionListener(this);
@@ -114,7 +141,7 @@ public class MainFrame extends JFrame implements ActionListener {
         mStopButton.addActionListener(this);
         this.getContentPane().add(mStopButton);
         
-        /* Change config button*/
+        // Change config button
         mChangeConfigButton = new JButton("Change Configuration");
         mChangeConfigButton.setBounds(26, 224, 300, 25);
         mChangeConfigButton.addActionListener(this);
@@ -124,41 +151,55 @@ public class MainFrame extends JFrame implements ActionListener {
         
     }
     
+    /**
+     * Method refreshJob stops current job(if started) and updates
+     * the config of the job. Note that it wont start the job again,
+     * user need to click the start button to do so.
+     *
+     */
+    public void refreshJob() {
+        mJob.setActive(false);
+        mJob.setConfig(mJobConfig);
+        mJob.init();
+    }
+    /**
+     * Method actionPerformed defines button actions
+     *
+     */
     @Override
     public void actionPerformed(ActionEvent e){
 
-        System.out.println("In MainFrame actionPerformed.");
-        
+        // For Start Button
         if (e.getSource() == this.mStartButton){
 
             Thread thread = new Thread(this.mJob);
             thread.start();
-            this.mMomentLabel.setText("WORKING");
-            this.mJobStatusLabel.setText("job started.");
+            this.mMomentLabel.setText("Waiting SMS");
+            this.mJobStatusLabel.setText("Job started.");
 
-        }else if (e.getSource() == this.mStopButton){
+        }
+       
+        // For Stop Button
+        if (e.getSource() == this.mStopButton){
 
             this.mJob.setActive(false);
-            if (this.mJobStatusLabel.getText().compareTo("job started.") == 0 ){
+            if (this.mJobStatusLabel.getText().compareTo("Job started.") == 0 ){
                 this.mMomentLabel.setText("STOPPED");
-                this.mJobStatusLabel.setText("job ended.");
+                this.mJobStatusLabel.setText("Job ended.");
                 DateTime datetime = new DateTime();
                 DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
                 this.mLastSentTimeLabel.setText(datetime.toString(fmt));
-                
             }
             
-        }else if (e.getSource() == this.mChangeConfigButton){
+        }
+       
+        // For ChangeConfig Button
+        if (e.getSource() == this.mChangeConfigButton){
 
             this.mConfigFrame.setVisible(true);
-
-        }else{
-
-            System.out.println("Callback to MainFrame");
 
         }
 
     }
-    
 
 }

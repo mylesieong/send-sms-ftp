@@ -19,6 +19,12 @@ import org.sqlite.SQLiteDataSource;
 
 import com.bcm.app.engine.JobConfig;
 
+/**
+ * Class ConfigFrame is the configuration screen. It allows user
+ * to read/write and verify application configuration(ftp settings,
+ * folder locations, job interval and etc.)
+ *
+ */
 @Component
 public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
 
@@ -69,21 +75,34 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     public JButton mSaveConfigButton;
     public JButton mCancelButton;
 
-    /* 
-     * JobConfig member 
+    /*
+     * Bean get/autowire from the pool
      */
     @Autowired
     private JobConfig jobConfig;
 
-    public ConfigFrame() {
+    /**
+     * Method initialize() initialize ConfigFrame and its components, and 
+     * write the value to different fields.
+     *
+     */
+    public void initialize() {
+        initializeComponent();
+        bindPropertiesToFields();
     }
-
+    
+    /**
+     * [Private] Initialize JComponents on ConfigFrame
+     *
+     */
     private void initializeComponent(){
+
+        // Main Frame basic 
         this.setBounds(100, 100, 360, 385);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.getContentPane().setLayout(null);
         
-        /*Ftp address */
+        //Ftp address 
         mFtpAddressTagLabel = new JLabel("Ftp Address: ");
         mFtpAddressTagLabel.setBounds(26, 25, 100, 16);
         this.getContentPane().add(mFtpAddressTagLabel);
@@ -93,7 +112,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpAddressField.addKeyListener(this);
         this.getContentPane().add(mFtpAddressField);
         
-        /*Ftp port */
+        //Ftp port 
         mFtpPortTagLabel = new JLabel("Ftp Port: ");
         mFtpPortTagLabel.setBounds(26, 50, 100, 16);
         this.getContentPane().add(mFtpPortTagLabel);
@@ -103,7 +122,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpPortField.addKeyListener(this);
         this.getContentPane().add(mFtpPortField);
 
-        /*Ftp user */
+        //Ftp user 
         mFtpUserTagLabel = new JLabel("Ftp User: ");
         mFtpUserTagLabel.setBounds(26, 75, 100, 16);
         this.getContentPane().add(mFtpUserTagLabel);
@@ -113,7 +132,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpUserField.addKeyListener(this);
         this.getContentPane().add(mFtpUserField);
 
-        /*Ftp password */
+        //Ftp password 
         mFtpPasswordTagLabel = new JLabel("Ftp Password: ");
         mFtpPasswordTagLabel.setBounds(26, 100, 100, 16);
         this.getContentPane().add(mFtpPasswordTagLabel);
@@ -123,7 +142,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpPasswordField.addKeyListener(this);
         this.getContentPane().add(mFtpPasswordField);
 
-        /*Ftp Folder */
+        //Ftp Folder 
         mFtpFolderTagLabel = new JLabel("Ftp Folder: ");
         mFtpFolderTagLabel.setBounds(26, 125, 100, 16);
         this.getContentPane().add(mFtpFolderTagLabel);
@@ -133,7 +152,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFtpFolderField.addKeyListener(this);
         this.getContentPane().add(mFtpFolderField);
 
-        /*SMS Folder */
+        //SMS Folder 
         mSMSFolderTagLabel = new JLabel("SMS Folder: ");
         mSMSFolderTagLabel.setBounds(26, 150, 100, 16);
         this.getContentPane().add(mSMSFolderTagLabel);
@@ -143,7 +162,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mSMSFolderField.addKeyListener(this);
         this.getContentPane().add(mSMSFolderField);
 
-        /*Backup Folder */
+        //Backup Folder 
         mBackupFolderTagLabel = new JLabel("Backup Folder: ");
         mBackupFolderTagLabel.setBounds(26, 175, 100, 16);
         this.getContentPane().add(mBackupFolderTagLabel);
@@ -153,7 +172,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mBackupFolderField.addKeyListener(this);
         this.getContentPane().add(mBackupFolderField);
 
-        /*Loop Interval */
+        //Loop Interval 
         mLoopIntervalTagLabel = new JLabel("Loop Interval: ");
         mLoopIntervalTagLabel.setBounds(26, 200, 100, 16);
         this.getContentPane().add(mLoopIntervalTagLabel);
@@ -163,7 +182,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mLoopIntervalField.addKeyListener(this);
         this.getContentPane().add(mLoopIntervalField);
 
-        /* Log Config */
+        // Log Config 
         mLogPropTagLabel = new JLabel("Log Config: ");
         mLogPropTagLabel.setBounds(26, 225, 100, 16);
         this.getContentPane().add(mLogPropTagLabel);
@@ -173,7 +192,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mLogPropField.addKeyListener(this);
         this.getContentPane().add(mLogPropField);
 
-        /* File type */
+        // File type 
         mFileTypeTagLabel = new JLabel("File Type: ");
         mFileTypeTagLabel.setBounds(26, 250, 100, 16);
         this.getContentPane().add(mFileTypeTagLabel);
@@ -183,87 +202,36 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFileTypeField.addKeyListener(this);
         this.getContentPane().add(mFileTypeField);
 
-        /* Button: verify */
+        // Button: verify 
         mVerifyConfigButton = new JButton("Verify");
         mVerifyConfigButton.setBounds(26, 285, 80, 35);
         mVerifyConfigButton.addActionListener(this);
         this.getContentPane().add(mVerifyConfigButton);
         
-        /* Button: Save */
+        // Button: Save 
         mSaveConfigButton = new JButton("Save");
         mSaveConfigButton.setBounds(116, 285, 80, 35);
         mSaveConfigButton.addActionListener(this);
         mSaveConfigButton.setEnabled(false);
         this.getContentPane().add(mSaveConfigButton);
 
-        /* Button: Cancel1 */
+        // Button: Cancel1 
         mCancelButton = new JButton("Cancel");
         mCancelButton.setBounds(206, 285, 80, 35);
         mCancelButton.addActionListener(this);
         this.getContentPane().add(mCancelButton);
 
-        /* Verify Result Label */
+        // Verify Result Label 
         mVerifyResultLabel = new JLabel();
         mVerifyResultLabel.setBounds(26, 325, 275, 16);
         this.getContentPane().add(mVerifyResultLabel);
+
     }
 
     /**
-     * Init this
+     * [Private] Write value on JTextField to config file
+     *
      */
-    public void initialize() {
-        initializeComponent();
-        bindPropertiesToFields();
-    }
-    
-    public void setCallbackFrame(MainFrame frame){
-        this.mCallbackFrame = frame;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e){
-        
-        if (e.getSource() == this.mVerifyConfigButton){
-
-            bindFieldsToProperties();
-
-            if (jobConfig.verifyConfig()) {
-                mVerifyResultLabel.setText("Config integrity validated.");
-                mSaveConfigButton.setEnabled(true);
-            }else{
-                mVerifyResultLabel.setText("Config not valid.");
-                mSaveConfigButton.setEnabled(false);
-            }
-        }
-        
-        if (e.getSource() == this.mSaveConfigButton){
-
-            /* Prompt a password verify dialog */
-            String pwd = jobConfig.getConfigEntry(JobConfig.FTP_PASSWORD_PROPERTY);
-            String pwdBeta = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
-            System.out.println("Verified password" + pwd + " & Input password" + pwdBeta);
-
-            if (pwd.compareTo(pwdBeta) == 0){
-                /* Update mainframe properties and update the job settings */
-                this.jobConfig.saveConfig();
-                this.mCallbackFrame.initializeJob();
-                JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                JOptionPane.showMessageDialog(this, "Wrong password!", "Result", JOptionPane.ERROR_MESSAGE);
-            }
-
-        }
-
-        if (e.getSource() == this.mCancelButton){
-
-            /* Reload properties before change */
-            bindPropertiesToFields();
-            this.setVisible(false);
-
-        }
-                
-    }
-
     private void bindFieldsToProperties(){
         jobConfig.setConfigEntry(JobConfig.FTP_ADDRESS_PROPERTY, this.mFtpAddressField.getText());
         jobConfig.setConfigEntry(JobConfig.FTP_PORT_PROPERTY, this.mFtpPortField.getText());
@@ -277,6 +245,10 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         jobConfig.setConfigEntry(JobConfig.FILE_TYPE_PROPERTY, this.mFileTypeField.getText());
     }
 
+    /**
+     * [Private] Write value from config file to JTextField 
+     *
+     */
     private void bindPropertiesToFields(){
         mFtpAddressField.setText(jobConfig.getConfigEntry(JobConfig.FTP_ADDRESS_PROPERTY));
         mFtpPortField.setText(jobConfig.getConfigEntry(JobConfig.FTP_PORT_PROPERTY));
@@ -290,18 +262,104 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
         mFileTypeField.setText(jobConfig.getConfigEntry(JobConfig.FILE_TYPE_PROPERTY));
     }
 
+    /**
+     * Setter of mCallbackFrame. This callback is used when user updates 
+     * the config successfully so that the Method MainFrame:initializeJob
+     * will be call to refresh the running job.
+     *
+     * @param MainFrame 
+     */
+    public void setCallbackFrame(MainFrame frame){
+        this.mCallbackFrame = frame;
+    }
+
+    /**
+     * Method actionPerformed defines button actions
+     *
+     */
+    @Override
+    public void actionPerformed(ActionEvent e){
+        
+        // For Verify Button
+        if (e.getSource() == this.mVerifyConfigButton){
+
+            bindFieldsToProperties();
+
+            if (jobConfig.verifyConfig()) {
+                mVerifyResultLabel.setText("Config integrity validated.");
+                mSaveConfigButton.setEnabled(true);
+            }else{
+                mVerifyResultLabel.setText("Config not valid.");
+                mSaveConfigButton.setEnabled(false);
+            }
+
+        }
+        
+        // For Save Button
+        // Any change of field will disable the save button, user can only
+        // enable save button by clicking verify button and pass the 
+        // verification
+        if (e.getSource() == this.mSaveConfigButton){
+
+            // Get real pwd from config file
+            String pwd = jobConfig.getConfigEntry(JobConfig.FTP_PASSWORD_PROPERTY);
+
+            // Prompt user for password input
+            String pwdI = (String)JOptionPane.showInputDialog(this, "Enter Password", "Password", JOptionPane.PLAIN_MESSAGE);
+
+            // If user's password matches the real one, save mainframe 
+            // properties and update the job settings 
+            if (pwd.compareTo(pwdI) == 0){
+                this.jobConfig.saveConfig();
+                this.mCallbackFrame.refreshJob();
+                JOptionPane.showMessageDialog(this, "Save Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Wrong password!", "Result", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+        // For Cancel Button
+        if (e.getSource() == this.mCancelButton){
+
+            // Reload properties before change 
+            bindPropertiesToFields();
+            this.setVisible(false);
+
+        }
+                
+    }
+
+    /**
+     * Method disables save button so that user has to
+     * click the verify button before he/she can save 
+     * the changed config.
+     *
+     */
     @Override
     public void keyPressed(KeyEvent event){
         System.out.println("Key pressed");
         this.mSaveConfigButton.setEnabled(false);
     }
 
+    /**
+     * Method disables save button so that user has to
+     * click the verify button before he/she can save 
+     * the changed config.
+     *
+     */
     @Override
     public void keyReleased(KeyEvent event){
         System.out.println("Key release");
         this.mSaveConfigButton.setEnabled(false);
     }
 
+    /**
+     * Method disables save button so that user has to
+     * click the verify button before he/she can save 
+     * the changed config.
+     *
+     */
     @Override
     public void keyTyped(KeyEvent event){
         System.out.println("Key type");
