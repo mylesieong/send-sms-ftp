@@ -20,19 +20,19 @@ public class FileRemover extends FileManipulator{
 
         if (this.mFile == null){
 
-            this.mIsSuccess = false;
+            this.mSuccess = false;
 
         }else{
 
             try{
 
                 FileUtils.forceDelete(this.mFile);
-                this.mIsSuccess = true;
+                this.mSuccess = true;
 
             }catch(Exception e){
 
                 e.printStackTrace();
-                this.mIsSuccess = false;
+                this.mSuccess = false;
 
             }
 

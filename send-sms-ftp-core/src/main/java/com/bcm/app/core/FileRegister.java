@@ -40,7 +40,7 @@ public class FileRegister extends FileManipulator{
 
         if (this.mFile == null){
 
-            this.mIsSuccess = false;
+            this.mSuccess = false;
 
         }else{
 
@@ -55,7 +55,7 @@ public class FileRegister extends FileManipulator{
                 fileTypeOK = type.compareToIgnoreCase(this.mFileType) == 0;
             }
 
-            this.mIsSuccess = fileExist && fileTypeOK;
+            this.mSuccess = fileExist && fileTypeOK;
 
         }
 

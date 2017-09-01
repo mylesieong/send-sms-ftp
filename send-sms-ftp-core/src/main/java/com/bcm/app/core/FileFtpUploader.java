@@ -109,7 +109,7 @@ public class FileFtpUploader extends FileManipulator{
             int replyCode = ftpClient.getReplyCode();
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 System.out.println("Operation failed. Server reply code: " + replyCode);
-                this.mIsSuccess = false;
+                this.mSuccess = false;
                 return ;
             }
             
@@ -117,7 +117,7 @@ public class FileFtpUploader extends FileManipulator{
             boolean success = ftpClient.login(this.getFtpUser(), this.getFtpPassword());
             if (!success){            
                 System.out.println("Wrong ftp settings, operation quited.");
-                this.mIsSuccess = false;
+                this.mSuccess = false;
                 return ;
             }
 
@@ -125,14 +125,14 @@ public class FileFtpUploader extends FileManipulator{
             ftpClient.changeWorkingDirectory(this.getFtpFolder());
             if (!FTPReply.isPositiveCompletion(replyCode)){
                 System.out.println("Cannot find target ftp folder, operation quited. ");
-                this.mIsSuccess = false;
+                this.mSuccess = false;
                 return ; 
             }
             
             // Perform upload 
             input = new FileInputStream(this.getFile());  //fileName includes filetype
             ftpClient.appendFile(this.getFile().getName(), input);
-            this.mIsSuccess = true;
+            this.mSuccess = true;
 
         }catch (Exception e){
 

@@ -64,10 +64,10 @@ public class FileBackuper extends FileManipulator{
 
                 // Copy content to backup file and set result
                 FileUtils.copyFile(this.getFile(), backupFile);
-                this.mIsSuccess = true;
+                this.mSuccess = true;
                 
             }else{
-                this.mIsSuccess = false;
+                this.mSuccess = false;
             }
 
         }catch (Exception e){

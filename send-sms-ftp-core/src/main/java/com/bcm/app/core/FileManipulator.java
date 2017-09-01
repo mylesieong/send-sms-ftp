@@ -14,7 +14,7 @@ import java.io.File;
 public abstract class FileManipulator{
 
     protected File mFile;
-    protected boolean mIsSuccess = false;
+    protected boolean mSuccess = false;
 
     /**
      * Target file should be injected to FileManipulator with this method.
@@ -26,7 +26,7 @@ public abstract class FileManipulator{
      */
     public void setFile(File file){
         this.mFile = file;
-        this.mIsSuccess = false;
+        this.mSuccess = false;
     }
 
     /**
@@ -43,7 +43,7 @@ public abstract class FileManipulator{
      * For example, implementation of method manipulate() in FileRegister 
      * verifies target file's existence and check wether it belongs to a 
      * certain file type. When user implements this method, be aware that
-     * class member mIsSuccess should be evaluated. 
+     * class member mSuccess should be evaluated. 
      *
      */
     public abstract void manipulate();
@@ -54,7 +54,7 @@ public abstract class FileManipulator{
      * @return boolean
      */
     public boolean isSuccess(){
-        return this.mIsSuccess;
+        return this.mSuccess;
     }
 
 }
