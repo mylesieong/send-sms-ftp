@@ -1,13 +1,17 @@
 package com.bcm.app.engine;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;   
-
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.lang.*; 
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;   
 
 import org.springframework.stereotype.Component;
 
@@ -59,6 +63,16 @@ public class SendSMSJob extends Thread {
      */
     private JobConfig mConfig;
 
+    /*
+     * just sent something flag
+     */
+    private boolean mJustSentSomethingFlag;
+
+    /*
+     * DateTime of last sent moment
+     */
+    private DateTime mLastSentDateTime;
+
     /**
      * Setter of member mConfig
      */
@@ -74,6 +88,30 @@ public class SendSMSJob extends Thread {
     }
 
     /**
+     * Turn off mJustSentSomethingFlag
+     */
+    public void turnOffJustSentSomethingFlag(){
+        this.mJustSentSomethingFlag = false;
+    }
+
+    /**
+     * Tell people did the job just sent something
+     *
+     * @return boolean
+     */
+    public boolean didIJustSentSomething(){
+        return this.mJustSentSomethingFlag;
+    }
+
+    /**
+     *
+     * @return DateTime
+     */
+    public DateTime getLastSentDateTime(){
+        return this.mLastSentDateTime;
+    }
+
+    /**
      * Method init() create instance of FileManipulator(s) and inject into 
      * process chain. Developer should modify this method if new FileManipulator
      * is introduced to the project.
@@ -83,6 +121,7 @@ public class SendSMSJob extends Thread {
 
         this.mIsActive = false;
         this.mProcessChain = new ArrayList<FileManipulator>();
+        this.mJustSentSomethingFlag = false;
 
         // Set up FileRegister, inject into LogProxy and push into ProcessChain 
         String fileType = this.mConfig.getConfigEntry(JobConfig.FILE_TYPE_PROPERTY);
@@ -172,6 +211,8 @@ public class SendSMSJob extends Thread {
                 if (targetFoler.exists() && targetFoler.isDirectory()){
                     for (File f : targetFoler.listFiles()){
 
+                        boolean chainBroke = false;
+
                         // Process the target file with FileManipulator one after one
                         // If the result is not success, then stop any further process
                         // on the file and move to next file
@@ -179,8 +220,16 @@ public class SendSMSJob extends Thread {
                             fm.setFile(f);
                             fm.manipulate();
                             if (!fm.isSuccess()){
+                                chainBroke = true;
                                 break;
                             }
+                        }
+
+                        // If chain was processed completely, then trun on the 
+                        // mJustSentSomethingFlag 
+                        if (!chainBroke){
+                            this.mJustSentSomethingFlag = true;
+                            this.mLastSentDateTime = DateTime.now();
                         }
 
                     }

@@ -148,6 +148,38 @@ public class MainFrame extends JFrame implements ActionListener {
         this.getContentPane().add(mChangeConfigButton);
 
         this.setResizable(false);
+
+        // Add status checker that updates "last sent time" and "moment"
+        // by an interval of 1000(ms). 
+        Thread statusChecker = new Thread(new Runnable() {
+            @Override
+            public void run(){
+                try{
+                    while (true){
+                        if (MainFrame.this.mJob.isActive()){
+                            //Update last sent time 
+                            DateTime last = MainFrame.this.mJob.getLastSentDateTime();
+                            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                            if (last != null){
+                                MainFrame.this.mLastSentTimeLabel.setText(last.toString(fmt));
+                            }
+
+                            //Update moment
+                            if (MainFrame.this.mJob.didIJustSentSomething()){
+                                MainFrame.this.mMomentLabel.setText("Sending...");
+                                MainFrame.this.mJob.turnOffJustSentSomethingFlag();
+                            }else{
+                                MainFrame.this.mMomentLabel.setText("Waiting SMS");
+                            }
+                        }
+                        Thread.sleep(1000);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        statusChecker.start();
         
     }
     
@@ -197,9 +229,6 @@ public class MainFrame extends JFrame implements ActionListener {
             if (this.mJobStatusLabel.getText().compareTo("Job started.") == 0 ){
                 this.mMomentLabel.setText("Stopped");
                 this.mJobStatusLabel.setText("Job ended.");
-                DateTime datetime = new DateTime();
-                DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                this.mLastSentTimeLabel.setText(datetime.toString(fmt));
             }
             
         }
