@@ -158,9 +158,20 @@ public class MainFrame extends JFrame implements ActionListener {
      *
      */
     public void refreshJob() {
-        mJob.setActive(false);
-        mJob.setConfig(mJobConfig);
-        mJob.init();
+
+        this.mJob.setActive(false);
+
+        if (this.mJobStatusLabel.getText().compareTo("Job started.") == 0 ){
+            this.mMomentLabel.setText("Stopped");
+            this.mJobStatusLabel.setText("Job ended.");
+            DateTime datetime = new DateTime();
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            this.mLastSentTimeLabel.setText(datetime.toString(fmt));
+        }
+
+        this.mJob.setConfig(mJobConfig);
+        this.mJob.init();
+
     }
     /**
      * Method actionPerformed defines button actions
@@ -184,7 +195,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
             this.mJob.setActive(false);
             if (this.mJobStatusLabel.getText().compareTo("Job started.") == 0 ){
-                this.mMomentLabel.setText("STOPPED");
+                this.mMomentLabel.setText("Stopped");
                 this.mJobStatusLabel.setText("Job ended.");
                 DateTime datetime = new DateTime();
                 DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
