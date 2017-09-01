@@ -71,9 +71,9 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
     /*
      * Config Frame Button members
      */
-    public JButton mVerifyConfigButton;
-    public JButton mSaveConfigButton;
-    public JButton mCancelButton;
+    private JButton mVerifyConfigButton;
+    private JButton mSaveConfigButton;
+    private JButton mCancelButton;
 
     /*
      * Bean get/autowire from the pool
