@@ -60,6 +60,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private JLabel mJobStatusTagLabel;
     private JLabel mJobStatusLabel;
     private JLabel mMomentLabel;
+    private JLabel mNameLabel;
     private JButton mStartButton;
     private JButton mStopButton;
     private JButton mChangeConfigButton;
@@ -129,21 +130,29 @@ public class MainFrame extends JFrame implements ActionListener {
         mMomentLabel.setBounds(0, 84, 344, 48);
         mMomentLabel.setForeground(Color.red);
         this.getContentPane().add(mMomentLabel);
+
+        // Job Name
+        String jobName = this.mJobConfig.getConfigEntry(JobConfig.JOB_NAME_PROPERTY);
+        mNameLabel = new JLabel("[ " + jobName + " ]");
+        mNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        mNameLabel.setForeground(Color.cyan);
+        mNameLabel.setBounds(0, 140, 344, 14);
+        this.getContentPane().add(mNameLabel);
         
         // Button: Start and stop 
         mStartButton = new JButton("Start Send SMS");
-        mStartButton.setBounds(26, 154, 300, 25);
+        mStartButton.setBounds(26, 170, 300, 25);
         mStartButton.addActionListener(this);
         this.getContentPane().add(mStartButton);
         
         mStopButton = new JButton("Stop Send SMS");
-        mStopButton.setBounds(26, 190, 300, 25);
+        mStopButton.setBounds(26, 206, 300, 25);
         mStopButton.addActionListener(this);
         this.getContentPane().add(mStopButton);
         
         // Change config button
         mChangeConfigButton = new JButton("Change Configuration");
-        mChangeConfigButton.setBounds(26, 224, 300, 25);
+        mChangeConfigButton.setBounds(26, 240, 300, 25);
         mChangeConfigButton.addActionListener(this);
         this.getContentPane().add(mChangeConfigButton);
 

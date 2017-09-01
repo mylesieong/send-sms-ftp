@@ -36,6 +36,7 @@ public class JobConfig {
     public final static String LOOP_INTERVAL_PROPERTY = "LOOP_INTERVAL";
     public final static String FILE_TYPE_PROPERTY = "FILE_TYPE";
     public final static String LOG_PROPERTIES_PROPERTY = "LOG_PROP";
+    public final static String JOB_NAME_PROPERTY = "JOB_NAME";
     public final static String NA_VALUE = "N/A";
 
     /*
