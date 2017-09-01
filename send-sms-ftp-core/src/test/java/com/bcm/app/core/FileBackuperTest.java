@@ -62,7 +62,8 @@ public class FileBackuperTest{
       * note that this test can be improved becase the time stamp is real time so might 
       * differs to production time stamp
       */     
-     @Test
+     //@Test
+     //This feature is cancelled, no longer need this test
      public void testBackupCapabilityTimeStamp(){
          File f = null;
          File backupFile = null;
@@ -158,9 +159,7 @@ public class FileBackuperTest{
             messageBackuper.manipulate();
             
             /* Check result*/
-            DateTime datetime = new DateTime();
-            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddHHmmss");
-            backupFile = new File("backup\\testBackupCapabilitySameContent" + datetime.toString(fmt) + ".txt");
+            backupFile = new File("backup\\testBackupCapabilitySameContent.txt");
             assertEquals(FileUtils.contentEquals(copiedFile, backupFile), true);  //for backup isPerformed
             
          }catch (Exception e){
