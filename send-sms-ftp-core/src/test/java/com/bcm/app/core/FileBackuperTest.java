@@ -61,6 +61,7 @@ public class FileBackuperTest{
      @Test
      public void testBackupCapabilitySameContent(){
          File f = null;
+         File copiedFile = null;
          File backupFile = null;
          File backupFolder = null;
          try {
@@ -76,7 +77,7 @@ public class FileBackuperTest{
             fop.close();
             
             /*Prepare a copy for content comparation*/
-            File copiedFile = new File("copiedFile.txt");
+            copiedFile = new File("copiedFile.txt");
             FileUtils.touch(copiedFile);
             FileUtils.copyFile(f, copiedFile);
             
@@ -103,6 +104,10 @@ public class FileBackuperTest{
                 /* Delete used file and folder*/
                 if (f.exists()){
                     f.delete();
+                }
+
+                if (copiedFile.exists()){
+                    copiedFile.delete();
                 }
 
                 if (backupFile.exists()){
