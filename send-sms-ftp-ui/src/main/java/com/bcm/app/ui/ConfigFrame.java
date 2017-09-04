@@ -9,13 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.EventQueue;
 import java.awt.Font;
 
-import java.sql.*;
- 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteDataSource;
 
 import com.bcm.app.engine.JobConfig;
 
