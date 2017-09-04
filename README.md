@@ -1,4 +1,4 @@
-# Send SMS to FTP Application Overview
+#" Send SMS to FTP Application Overview
 
 This repository contains the source code of send-sms-ftp application. The goal of application is to monitor a folder and upload new files in it(which suit selection criteria) to ftp server.
 
@@ -21,12 +21,14 @@ To build this project, please install following dependencies:
 (Internet access is required for the first-time build)
 
 To build the project, run below code at your shell:
+
 ```cmd
 cd C:\path\to\the\project\root
 mvn clean package
 mvn install
 mvn javadoc:javadoc
 ```
+To install the new build to production, simply copy the jar file under send-sms-ftp-ui/target and replace the production jar with it. Please check the new jar name matches the jar name in production bat since the version suffix might change along new builds.
 
 ## How to run
 
@@ -59,7 +61,7 @@ For more information on git usage, google it.
 
 - *2017-02-17* Reach the MVP(minimal valid product)
 - *2017-03-10* Develope the package structure
-- *2017-08-31* Release v1.0
+- *2017-09-01* Release v1.0
 
 ## Future-proof Features & Guidance
 

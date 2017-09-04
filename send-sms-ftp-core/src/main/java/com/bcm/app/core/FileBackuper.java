@@ -8,8 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * Class FileBackuper copies target file and paste to a backup folder.
- * The FileBackuper should not change the original file.
+ * Class FileBackuper copies target file and paste to a backup folder
+ * (the filename remain unchanged). The FileBackuper should not change 
+ * the original file as well.
  *
  */
 public class FileBackuper extends FileManipulator{

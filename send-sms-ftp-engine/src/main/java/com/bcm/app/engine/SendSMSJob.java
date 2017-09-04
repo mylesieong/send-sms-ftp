@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import org.apache.commons.io.FileUtils;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;   
 
@@ -152,14 +154,30 @@ public class SendSMSJob extends Thread {
         this.mProcessChain.add(ftpUploader);
         
         // Set up FileBackuper, inject into LogProxy and push into ProcessChain 
-        String backupFolder = this.mConfig.getConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY);
+        final String pathBase = this.mConfig.getConfigEntry(JobConfig.BACKUP_FOLDER_PROPERTY);
 
         FileManipulatorLogProxy backuper = new FileManipulatorLogProxy();
-        FileBackuper realBackuper = new FileBackuper();
-        realBackuper.setPath(backupFolder);
+        final FileBackuper realBackuper = new FileBackuper();
+        updateBackupPath(realBackuper, pathBase); 
         backuper.setName("BACKUP");
         backuper.setRealObject(realBackuper);
         this.mProcessChain.add(backuper);
+        // Kick off hourly checker for FileBackupers (interval is by ms)
+        final int interval = 3600 * 1000; // 1hr = 3600s = 3600 * 1000ms
+        Thread pathChecker = new Thread(new Runnable() {
+            @Override
+            public void run(){
+                try{
+                    while (true){
+                        SendSMSJob.this.updateBackupPath(realBackuper, pathBase);
+                        Thread.sleep(interval); 
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        pathChecker.start();
 
         // Set up FileRemover, inject into LogProxy and push into ProcessChain 
         FileManipulatorLogProxy remover = new FileManipulatorLogProxy();
@@ -173,7 +191,39 @@ public class SendSMSJob extends Thread {
         PropertyConfigurator.configure(logProperties);
 
     }
+
+    /**
+     * Method updateBackupPath reads the current day and create folder under 
+     * pathBase if there is not one yet, then set the folder as path of the
+     * FileBackuper.
+     *
+     * @param FileBackuper
+     * @param String pathBase e.g. C:\path\to\backup\folder\base
+     */
+    private void updateBackupPath(FileBackuper fb, String pathBase){
+        try {
+            //Get today's date in YYYYMMDD string
+            String realtimeYmd = this.getYYYYMMDD();
+            String newPathname = pathBase + File.separator + realtimeYmd;
+            File newPath = new File(newPathname);
+            FileUtils.forceMkdir(newPath);
+            fb.setPath(newPathname);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     
+    /**
+     * Utility method: get the String of YYYYMMDD
+     *
+     * @return String YYYYMMDD
+     */
+    private String getYYYYMMDD(){
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+        String ymd = DateTime.now().toString(fmt);
+        return ymd;
+    }
+
     /**
      * Getter of member mIsActive
      */ 
