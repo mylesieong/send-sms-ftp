@@ -3,6 +3,7 @@ package com.bcm.app.engine;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.lang.*; 
 
@@ -163,6 +164,7 @@ public class SendSMSJob extends Thread {
         backuper.setRealObject(realBackuper);
         this.mProcessChain.add(backuper);
         // Kick off hourly checker for FileBackupers (interval is by ms)
+        // TODO put this into properties file
         final int interval = 3600 * 1000; // 1hr = 3600s = 3600 * 1000ms
         Thread pathChecker = new Thread(new Runnable() {
             @Override
@@ -249,6 +251,7 @@ public class SendSMSJob extends Thread {
         mLogger.debug("Job Starts.");
 
         int interval = Integer.parseInt(this.mConfig.getConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY));
+        int throughput = Integer.parseInt(this.mConfig.getConfigEntry(JobConfig.THROUGHPUT_PROPERTY));
         String smsFolder = this.mConfig.getConfigEntry(JobConfig.SMS_FOLDER_PROPERTY);
         this.mIsActive = true;
 
@@ -259,7 +262,10 @@ public class SendSMSJob extends Thread {
                 // Iterate files in target folder
                 File targetFoler = new File(smsFolder);
                 if (targetFoler.exists() && targetFoler.isDirectory()){
-                    for (File f : targetFoler.listFiles()){
+
+                    File[] files = pickFiles(targetFoler.listFiles(), throughput); //select files according to throughput
+
+                    for (File f : files){
 
                         boolean chainBroke = false;
 
@@ -283,6 +289,7 @@ public class SendSMSJob extends Thread {
                         }
 
                     }
+
                 }
                 
                 //Set thread to sleep for an interval(ms)
@@ -298,5 +305,20 @@ public class SendSMSJob extends Thread {
         mLogger.debug("Job Ends.");
 
     }
+
+    /**
+     * [PRIVATE] Method pickFiles select the first n files from the input
+     * and return to client. This helps to limit the work load 
+     * of the job. The job might risk to break the heap if the 
+     * job register too many files for a time.
+     *
+     * @param int max number of files
+     * @return File[] a selected file array
+     */
+    private File[] pickFiles(File[] files, int max){
+        int from = 0;
+        int to = files.length > max ? max - 1 : files.length;
+        return Arrays.copyOfRange(files, from, to);
+    } 
     
 }
