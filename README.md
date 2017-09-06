@@ -42,6 +42,10 @@ To run, double click the send-sms-ftp-engine.bat at the project root or run belo
 To run, double click the send-sms-ftp-ui.bat at the project root or run below command in shell(config.properties and log4j.properties are required at the same folder):
 `java -jar /path/to/ui/jar/file/send-sms-ftp-ui-1.0-SNAPSHOT.jar`
 
+### JVM Tunning
+
+There is always a risk to break the heap. It is suggested that a max heap size of 64mb (-Xmx64m) and a min heap size of 32mb (-Xms64m) is set to jvm so that one instance wont take too much resource while it can still handle a load case that 50,000 x 1k files rush in (tested on local machine, might not be applicable to all machine, just for your reference).
+
 ## How to version control
 
 This is a git project. Install git and perform below features with these commands:
