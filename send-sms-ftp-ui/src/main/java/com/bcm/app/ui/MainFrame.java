@@ -133,9 +133,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
         // Job Name
         String jobName = this.mJobConfig.getConfigEntry(JobConfig.JOB_NAME_PROPERTY);
-        mNameLabel = new JLabel("[ " + jobName + " ]");
+        mNameLabel = new JLabel(jobName);
+        Font biggerBoldFont = new Font(mNameLabel.getFont().getFontName(), Font.BOLD, mNameLabel.getFont().getSize() + 2);
+        mNameLabel.setFont(biggerBoldFont);
         mNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        mNameLabel.setForeground(Color.cyan);
         mNameLabel.setBounds(0, 140, 344, 14);
         this.getContentPane().add(mNameLabel);
         
