@@ -163,9 +163,8 @@ public class SendSMSJob extends Thread {
         backuper.setName("BACKUP");
         backuper.setRealObject(realBackuper);
         this.mProcessChain.add(backuper);
-        // Kick off hourly checker for FileBackupers (interval is by ms)
-        // TODO put this into properties file
-        final int interval = 3600 * 1000; // 1hr = 3600s = 3600 * 1000ms
+        // Kick off hourly checker for FileBackupers (also use loop interval)
+        final int interval = Integer.parseInt(this.mConfig.getConfigEntry(JobConfig.LOOP_INTERVAL_PROPERTY));
         Thread pathChecker = new Thread(new Runnable() {
             @Override
             public void run(){
@@ -207,8 +206,6 @@ public class SendSMSJob extends Thread {
             //Get today's date in YYYYMMDD string
             String realtimeYmd = this.getYYYYMMDD();
             String newPathname = pathBase + File.separator + realtimeYmd;
-            File newPath = new File(newPathname);
-            FileUtils.forceMkdir(newPath);
             fb.setPath(newPathname);
         }catch (Exception e){
             e.printStackTrace();

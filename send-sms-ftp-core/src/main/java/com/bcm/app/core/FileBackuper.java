@@ -48,11 +48,14 @@ public class FileBackuper extends FileManipulator{
         try{
 
             if (this.mFile != null && this.mFile.exists()){
+
+                // Ensure path exist
+                FileUtils.forceMkdir(new File(mPath));
                 
                 // Create empty backup file with name appended with timestamp
                 String fileName = FilenameUtils.getBaseName(mFile.toString());
                 String fileExtension = FilenameUtils.getExtension(mFile.toString());
-                File backupFile = new File(mPath + "\\" + fileName + "." + fileExtension);
+                File backupFile = new File(mPath + File.separator + fileName + "." + fileExtension);
                 backupFile.createNewFile();
 
                 // Copy content to backup file and set result
