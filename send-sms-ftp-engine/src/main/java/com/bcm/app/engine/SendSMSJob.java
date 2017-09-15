@@ -198,8 +198,8 @@ public class SendSMSJob extends Thread {
      * pathBase if there is not one yet, then set the folder as path of the
      * FileBackuper.
      *
-     * @param FileBackuper
-     * @param String pathBase e.g. C:\path\to\backup\folder\base
+     * @param fb A FileBackuper object
+     * @param pathBase The backup folder path e.g. C:\path\to\backup\folder\base
      */
     private void updateBackupPath(FileBackuper fb, String pathBase){
         try {
@@ -309,7 +309,8 @@ public class SendSMSJob extends Thread {
      * of the job. The job might risk to break the heap if the 
      * job register too many files for a time.
      *
-     * @param int max number of files
+     * @param files a list of file candidates
+     * @param max maximum number of files
      * @return File[] a selected file array
      */
     private File[] pickFiles(File[] files, int max){

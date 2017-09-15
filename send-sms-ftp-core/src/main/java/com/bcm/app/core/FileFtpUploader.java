@@ -23,6 +23,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Setter of member
+     * @param address Address of ftp (can be hostname or ip)
      */
     public void setFtpAddress(String address){
         this.mFtpAddress = address;
@@ -30,6 +31,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Setter of member
+     * @param port number of ftp port 
      */
     public void setFtpPort(int port){
         this.mFtpPort = port;
@@ -37,6 +39,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Setter of member
+     * @param user String of username
      */
     public void setFtpUser(String user){
         this.mFtpUser = user;
@@ -44,6 +47,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Setter of member
+     * @param password String of password
      */
     public void setFtpPassword(String password){
         this.mFtpPassword = password;
@@ -51,6 +55,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Setter of member
+     * @param folder String of ftp target folder path
      */
     public void setFtpFolder(String folder){
         this.mFtpFolder = folder;
@@ -58,6 +63,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Getter of member
+     * @return String of ftp address
      */
     public String getFtpAddress(){
         return this.mFtpAddress;
@@ -65,6 +71,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Getter of member
+     * @return number of ftp port
      */
     public int getFtpPort(){
         return this.mFtpPort;
@@ -72,6 +79,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Getter of member
+     * @return string of ftp username
      */
     public String getFtpUser(){
         return this.mFtpUser;
@@ -79,6 +87,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Getter of member
+     * @return String of ftp password
      */
     public String getFtpPassword(){
         return this.mFtpPassword;
@@ -86,6 +95,7 @@ public class FileFtpUploader extends FileManipulator{
     
     /**
      * Getter of member
+     * @return string of target folder path on ftp
      */
     public String getFtpFolder(){
         return this.mFtpFolder;

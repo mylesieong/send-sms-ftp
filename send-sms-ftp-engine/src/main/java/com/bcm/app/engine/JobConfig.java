@@ -87,7 +87,7 @@ public class JobConfig {
      * JobConfig for the convenience of properties retrieval. But client 
      * can also use their own key strings.
      *
-     * @param String key of property. e.g. "FTP_ADDRESS", "FILE_TYPE"
+     * @param key String of property. e.g. "FTP_ADDRESS", "FILE_TYPE"
      * @return String
      */
     public String getConfigEntry(String key){
@@ -98,9 +98,8 @@ public class JobConfig {
      * Method setConfigEntry(key, value) sets the value by key to 
      * the properties member.
      *
-     * @param String key of property e.g. "FTP_ADDRESS", "FILE_TYPE"
-     * @param String value of property
-     * @return void
+     * @param key String of property e.g. "FTP_ADDRESS", "FILE_TYPE"
+     * @param value String of property
      */
     public void setConfigEntry(String key, String value){
         this.mProperties.setProperty(key, value);
@@ -189,7 +188,6 @@ public class JobConfig {
      * Method saveConfig() saves current properties in member mProperties
      * to the configuration file.
      *
-     * @return void
      */
     public void saveConfig(){
 

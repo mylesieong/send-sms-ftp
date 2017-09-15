@@ -23,7 +23,7 @@ public class FileBackuper extends FileManipulator{
     /**
      * Setter of member mPath.
      *
-     * @param String path of backup folder
+     * @param path String of backup folder
      */
     public void setPath(String path){
         this.mPath = path;

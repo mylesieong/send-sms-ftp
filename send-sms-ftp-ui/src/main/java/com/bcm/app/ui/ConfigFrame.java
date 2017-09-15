@@ -262,7 +262,7 @@ public class ConfigFrame extends JFrame implements ActionListener, KeyListener{
      * the config successfully so that the Method MainFrame:initializeJob
      * will be call to refresh the running job.
      *
-     * @param MainFrame 
+     * @param frame a MainFrame object for config frame to call back 
      */
     public void setCallbackFrame(MainFrame frame){
         this.mCallbackFrame = frame;

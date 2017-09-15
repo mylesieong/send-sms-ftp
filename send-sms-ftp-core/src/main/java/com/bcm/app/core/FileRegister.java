@@ -16,8 +16,7 @@ public class FileRegister extends FileManipulator{
 
     /**
      * Setter of member mFileType
-     *
-     * @param String filetype e.g. "msg", "txt"
+     * @param type String of filetype e.g. "msg", "txt"
      */
     public void setFileType(String type){
         this.mFileType = type;
@@ -25,6 +24,7 @@ public class FileRegister extends FileManipulator{
 
     /**
      * Getter of member mFileType
+     * @return String of file type
      */
     public String getFileType(){
         return this.mFileType;

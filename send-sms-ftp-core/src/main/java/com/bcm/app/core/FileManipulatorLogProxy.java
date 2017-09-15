@@ -36,6 +36,7 @@ public class FileManipulatorLogProxy extends FileManipulator{
 
     /**
      * Setter of member
+     * @param name String of this object's name (appear on log)
      */
     public void setName(String name){
         this.mName = name;
@@ -43,6 +44,7 @@ public class FileManipulatorLogProxy extends FileManipulator{
 
     /**
      * Getter of member
+     * @return String of this object's name (appear on log) 
      */
     public String getName(){
         return this.mName;
@@ -50,6 +52,7 @@ public class FileManipulatorLogProxy extends FileManipulator{
     
     /**
      * Setter of member
+     * @param fm an object of FileManipulator
      */
     public void setRealObject(FileManipulator fm){
         this.mReal = fm;
@@ -57,6 +60,7 @@ public class FileManipulatorLogProxy extends FileManipulator{
 
     /**
      * Getter of member
+     * @return FileManipulator that is real object (reference proxy pattern)
      */
     public FileManipulator getRealObject(){
         return this.mReal;
@@ -92,8 +96,7 @@ public class FileManipulatorLogProxy extends FileManipulator{
      * Method setFile(File) overrides FileManipulator:setFile(File)
      * that it uses real object to perfroms the operation.
      *
-     * @param File target file
-     * @return void
+     * @param f target file object
      */
     @Override
     public void setFile(File f){

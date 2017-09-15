@@ -21,8 +21,7 @@ public abstract class FileManipulator{
      * When new file is set, the success flag will be reset to false at the
      * same time.
      *
-     * @param File target file(will be manipulated)
-     * @return void 
+     * @param file target file object(will be manipulated)
      */
     public void setFile(File file){
         this.mFile = file;
